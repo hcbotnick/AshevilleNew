@@ -4,8 +4,8 @@
                 background: white; 
                 color: white; 
             }
-			#wrapper { 
-                width: max-content; 
+            .wrapper { 
+                width: 100%; 
                 max-width: 100%; 
                 padding-left: 5%;
                 margin: 0; 
