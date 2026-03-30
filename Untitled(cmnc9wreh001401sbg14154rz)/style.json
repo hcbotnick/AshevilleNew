@@ -1,0 +1,112 @@
+{
+    "version": 8,
+    "name": "Untitled",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:thumb": "data:image/webp;base64,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",
+        "mapbox:uiParadigm": "layers",
+        "mapbox:sdk-support": {
+            "js": "3.21.0",
+            "android": "11.21.0",
+            "ios": "11.21.0"
+        },
+        "mapbox:groups": {},
+        "mapbox:uiExpandedImports": ["basemap"]
+    },
+    "center": [-34, 38],
+    "zoom": 2,
+    "terrain": null,
+    "imports": [
+        {
+            "id": "basemap",
+            "url": "mapbox://styles/mapbox/standard",
+            "config": {
+                "showPlaceLabels": true,
+                "theme": "faded",
+                "show3dFacades": true,
+                "show3dLandmarks": false,
+                "showPointOfInterestLabels": false,
+                "lightPreset": "dusk",
+                "showTransitLabels": false,
+                "showAdminBoundaries": true,
+                "showPedestrianRoads": true,
+                "showRoadLabels": false
+            }
+        }
+    ],
+    "sources": {
+        "composite": {"url": "mapbox://hbotnick.ddjp72yg", "type": "vector"}
+    },
+    "sprite": "mapbox://sprites/hbotnick/cmnc9wreh001401sbg14154rz/ehtub0tlftdxtrofk3pycl3gk",
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "projection": {"name": "globe"},
+    "layers": [
+        {
+            "id": "untitled-map-hurricane-movements-csv copy 1",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "Untitled_map-_Hurricane_Movements.csv",
+            "filter": ["match", ["get", "Name"], ["KY", "NC"], true, false],
+            "layout": {
+                "icon-size-scale-range": [0.1, 0.1],
+                "icon-image": [
+                    "image",
+                    "hurricane",
+                    {"params": {"color-1": "hsl(59, 94%, 69%)"}}
+                ]
+            },
+            "paint": {}
+        },
+        {
+            "id": "untitled-map-hurricane-movements-csv copy",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "Untitled_map-_Hurricane_Movements.csv",
+            "filter": ["match", ["get", "Name"], ["FL"], true, false],
+            "layout": {
+                "icon-size-scale-range": [0.1, 0.1],
+                "icon-image": "hurricane"
+            },
+            "paint": {}
+        },
+        {
+            "id": "untitled-map-hurricane-movements-csv copy 2",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "Untitled_map-_Hurricane_Movements.csv",
+            "filter": ["match", ["get", "Name"], ["GA"], true, false],
+            "layout": {
+                "icon-size-scale-range": [0.1, 0.1],
+                "icon-image": [
+                    "image",
+                    "hurricane",
+                    {"params": {"color-1": "hsl(39, 94%, 62%)"}}
+                ]
+            },
+            "paint": {}
+        },
+        {
+            "id": "untitled-map-hurricane-movements-csv copy 3",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "Untitled_map-_Hurricane_Movements.csv",
+            "filter": ["match", ["get", "Name"], "TN", true, false],
+            "layout": {
+                "icon-size-scale-range": [0.1, 0.1],
+                "icon-image": [
+                    "image",
+                    "hurricane",
+                    {"params": {"color-1": "hsl(109, 84%, 52%)"}}
+                ]
+            },
+            "paint": {}
+        }
+    ],
+    "created": "2026-03-29T21:30:43.001Z",
+    "modified": "2026-03-29T23:35:42.494Z",
+    "id": "cmnc9wreh001401sbg14154rz",
+    "owner": "hbotnick",
+    "visibility": "private",
+    "protected": false,
+    "draft": false
+}
