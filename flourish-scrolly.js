@@ -598,7 +598,7 @@ function initStyles() {
 			"transform: translate3d(0, 0, 0) scale(1);" +
 			"filter: none;" +
 			"transition: opacity 900ms ease, transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), filter 900ms ease, visibility 0s linear 0s;" +
-			"z-index: 3;" +
+			"z-index: 45;" +
 			"pointer-events: none;" +
 		"}" +
 		".fl-scrolly-sticky.fl-scrolly-inactive {" +
@@ -651,7 +651,7 @@ function initStyles() {
 			"width: 100vw;" +
 			"height: 100vh;" +
 			"height: 100dvh;" +
-			"z-index: 3;" +
+			"z-index: 2;" +
 			"background: #05090f;" +
 			"padding: 0;" +
 			"transition: opacity 260ms ease, transform 300ms ease;" +
