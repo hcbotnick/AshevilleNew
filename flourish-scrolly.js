@@ -542,8 +542,8 @@ function initStyles() {
 			"position: fixed;" +
 			"top: max(12px, 2vh);" +
 			"right: max(12px, 2vw);" +
-			"width: clamp(420px, 44vw, 640px);" +
-			"height: clamp(240px, 26vw, 360px);" +
+			"width: clamp(210px, 44vw, 320px);" +
+			"height: clamp(120px, 26vw, 180px);" +
 			"max-width: calc(100vw - 24px);" +
 			"max-height: calc(100vh - 24px);" +
 			"margin: 0;" +
