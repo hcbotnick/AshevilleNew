@@ -542,7 +542,7 @@ function initStyles() {
 			"position: fixed;" +
 			"top: max(12px, 2vh);" +
 			"right: max(12px, 2vw);" +
-			"width: clamp(210px, 44vw, 320px);" +
+			"width: clamp(200px, 44vw, 300px);" +
 			"height: clamp(120px, 26vw, 180px);" +
 			"max-width: calc(100vw - 24px);" +
 			"max-height: calc(100vh - 24px);" +
@@ -552,7 +552,6 @@ function initStyles() {
 			"background: rgba(12, 20, 26, 0.9);" +
 			"backdrop-filter: blur(4px);" +
 			"border: 1px solid rgba(255, 255, 255, 0.18);" +
-			"border-radius: 12px;" +
 			"box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);" +
 			"opacity: 0;" +
 			"visibility: hidden;" +
