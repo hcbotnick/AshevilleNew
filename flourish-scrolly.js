@@ -542,9 +542,10 @@ function initStyles() {
 			"position: fixed;" +
 			"top: max(12px, 2vh);" +
 			"right: max(12px, 2vw);" +
-			"width: min(76vw, 760px);" +
-			"height: min(46vw, 430px);" +
-			"max-height: 62vh;" +
+			"width: clamp(420px, 44vw, 640px);" +
+			"height: clamp(240px, 26vw, 360px);" +
+			"max-width: calc(100vw - 24px);" +
+			"max-height: calc(100vh - 24px);" +
 			"margin: 0;" +
 			"box-sizing: border-box;" +
 			"padding: 10px;" +
@@ -710,8 +711,8 @@ function initStyles() {
 				"bottom: 10px;" +
 				"left: 10px;" +
 				"width: auto;" +
-				"height: min(42vw, 220px);" +
-				"max-height: 36vh;" +
+				"height: clamp(180px, 34vw, 240px);" +
+				"max-height: 34vh;" +
 			"}" +
 			".fl-scrolly-section .fl-scrolly-step {" +
 				"width: calc(100% - 20px);" +
