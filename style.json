@@ -48,12 +48,8 @@
             "source-layer": "Untitled_map-_Hurricane_Movements.csv",
             "filter": ["match", ["get", "Name"], ["KY", "NC"], true, false],
             "layout": {
-                "icon-size": 0.5,
-                "icon-image": [
-                    "image",
-                    "hurricane",
-                    {"params": {"color-1": "hsl(59, 94%, 69%)"}}
-                ]
+                "icon-image": "hurricane",
+                "icon-size": 0.5
             },
             "paint": {}
         },
@@ -64,8 +60,8 @@
             "source-layer": "Untitled_map-_Hurricane_Movements.csv",
             "filter": ["match", ["get", "Name"], ["FL"], true, false],
             "layout": {
-                "icon-size": 0.5,
-                "icon-image": "hurricane"
+                "icon-image": "hurricane",
+                "icon-size": 0.5
             },
             "paint": {}
         },
@@ -76,12 +72,8 @@
             "source-layer": "Untitled_map-_Hurricane_Movements.csv",
             "filter": ["match", ["get", "Name"], ["GA"], true, false],
             "layout": {
-                "icon-size": 0.5,
-                "icon-image": [
-                    "image",
-                    "hurricane",
-                    {"params": {"color-1": "hsl(39, 94%, 62%)"}}
-                ]
+                "icon-image": "hurricane",
+                "icon-size": 0.5
             },
             "paint": {}
         },
@@ -92,12 +84,8 @@
             "source-layer": "Untitled_map-_Hurricane_Movements.csv",
             "filter": ["match", ["get", "Name"], "TN", true, false],
             "layout": {
-                "icon-size": 0.5,
-                "icon-image": [
-                    "image",
-                    "hurricane",
-                    {"params": {"color-1": "hsl(109, 84%, 52%)"}}
-                ]
+                "icon-image": "hurricane",
+                "icon-size": 0.5
             },
             "paint": {}
         }
