@@ -609,16 +609,16 @@ function initStyles() {
 		".fl-scrolly-section .fl-scrolly-step {" +
 			"position: relative;" +
 			"z-index: 20;" +
-			"width: 1000px;" +
+			"width: min(92vw, 1000px);" +
 			"height: auto;" +	
 			"margin: 0 0 50vh;" +
 			"padding: 1.25em;" +
 			"background: #333;" +
 			"box-shadow: 3px 3px 5px rgba(0,0,0,0.1);" +
 			"font-family: Helvetica, sans-serif;" + 
-			"font-size: 50px;" +
+			"font-size: clamp(20px, 2.8vw, 42px);" +
 			"font-weight: 600;" +
-			"line-height: 1.2em;" +
+			"line-height: 1.3;" +
 			"opacity: 0.22;" +
 			"text-align: left;" +
 			"transform: translate3d(-20px, 18px, 0); /* Workaround for Safari https://stackoverflow.com/questions/50224855/not-respecting-z-index-on-safari-with-position-sticky */" +
@@ -710,6 +710,12 @@ function initStyles() {
 				"left: 10px;" +
 				"width: auto;" +
 				"height: 220px;" +
+			"}" +
+			".fl-scrolly-section .fl-scrolly-step {" +
+				"width: calc(100% - 20px);" +
+				"font-size: clamp(16px, 5vw, 24px);" +
+				"line-height: 1.4;" +
+				"padding: 1em;" +
 			"}" +
 		"}";
 	document.body.appendChild(style);
