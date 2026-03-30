@@ -610,7 +610,7 @@ function initStyles() {
 		".fl-scrolly-section .fl-scrolly-step {" +
 			"position: relative;" +
 			"z-index: 20;" +
-			"width: min(84vw, 760px);" +
+			"width: min(42vw, 380px);" +
 			"height: auto;" +	
 			"margin: 0 0 50vh;" +
 			"padding: 1.25em;" +
