@@ -542,8 +542,9 @@ function initStyles() {
 			"position: fixed;" +
 			"top: max(12px, 2vh);" +
 			"right: max(12px, 2vw);" +
-			"width: 1000px;" +
-			"height: 600px;" +
+			"width: min(76vw, 760px);" +
+			"height: min(46vw, 430px);" +
+			"max-height: 62vh;" +
 			"margin: 0;" +
 			"box-sizing: border-box;" +
 			"padding: 10px;" +
@@ -609,14 +610,14 @@ function initStyles() {
 		".fl-scrolly-section .fl-scrolly-step {" +
 			"position: relative;" +
 			"z-index: 20;" +
-			"width: min(92vw, 1000px);" +
+			"width: min(84vw, 760px);" +
 			"height: auto;" +	
 			"margin: 0 0 50vh;" +
 			"padding: 1.25em;" +
 			"background: #333;" +
 			"box-shadow: 3px 3px 5px rgba(0,0,0,0.1);" +
 			"font-family: Helvetica, sans-serif;" + 
-			"font-size: clamp(20px, 2.8vw, 42px);" +
+			"font-size: clamp(18px, 2.2vw, 34px);" +
 			"font-weight: 600;" +
 			"line-height: 1.3;" +
 			"opacity: 0.22;" +
@@ -709,7 +710,8 @@ function initStyles() {
 				"bottom: 10px;" +
 				"left: 10px;" +
 				"width: auto;" +
-				"height: 220px;" +
+				"height: min(42vw, 220px);" +
+				"max-height: 36vh;" +
 			"}" +
 			".fl-scrolly-section .fl-scrolly-step {" +
 				"width: calc(100% - 20px);" +
