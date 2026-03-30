@@ -617,7 +617,7 @@ function initStyles() {
 			"background: #333;" +
 			"box-shadow: 3px 3px 5px rgba(0,0,0,0.1);" +
 			"font-family: Helvetica, sans-serif;" + 
-			"font-size: clamp(18px, 2.2vw, 34px);" +
+			"font-size: 15px;" +
 			"font-weight: 600;" +
 			"line-height: 1.3;" +
 			"opacity: 0.22;" +
