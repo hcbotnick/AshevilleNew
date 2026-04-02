@@ -471,12 +471,7 @@ function initMapboxOverlay() {
 			applyPendingMapState();
 		});
 
-		map_overlay_map.on("error", function(event) {
-			var message = event && event.error && event.error.message ? event.error.message : "Unknown Mapbox error";
-			if (message.indexOf("Secondary image variant") !== -1 || message.indexOf("Bare objects invalid") !== -1) return;
-			map_overlay_notice.textContent = "Mapbox error: " + message;
-			map_overlay_notice.style.display = "block";
-		});
+
 	}
 
 	// For local/relative JSON files: fetch, patch bare icon-image objects, then pass cleaned JSON
