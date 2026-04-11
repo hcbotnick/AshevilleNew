@@ -5,48 +5,46 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Scrolly example</title>
 		<link rel="stylesheet" href="avlstyle.css">
-		<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
-		<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
+		<script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
 	</head>
-	<body data-map-style="style.json">
+	<body class="fl-mapbox-loading" data-map-style="style.json" data-map-start-hidden="true">
 		<script>
 			window.FL_SCROLLY_MAPBOX_TOKEN = "pk.eyJ1IjoiaGJvdG5pY2siLCJhIjoiY21teHFhemVmMzVrYTJwcTN6NXlvM25qdSJ9.-o-cnZPaq1qxtY_eYDbVAA";
+			window.FL_SCROLLY_MARKER_LAT_OFFSET = -0.0025;
 			window.FL_SCROLLY_STEP_CONFIG = {
 				"3628495": {
 					"1": {
-						lat: 38.85408,
-						lng: -100.56146,
-						zoom: 5,
-						pitch: 20,
+						lat: 24.86784, 
+						lng: -85.9577,
+						zoom: 9,
+						pitch: 80,
 						bearing: 0,
-						hideIcons: true,
-						label: "Introduction",
+						hideIcons: false,
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
 						rotateDirection: "cw"
 					},
 					"2": {
-						lat: 30.09915,
-						lng: -84.02000,
-						zoom: 10,
-						pitch: 60,
-						bearing: -50,
+						lat: 30.0013, 
+						lng: -83.84018,
+						zoom: 9,
+						pitch: 80,
+						bearing: 0,
 						hideIcons: false,
-						label: "Helene Makes Landfall near Tallahassee, Florida",
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
 						rotateDirection: "cw"
 					},
 					"3": {	
-						lat: 33.0376,
-						lng: -83.23651,
-						zoom: 10,
-						pitch: 50,
-						bearing: 50,
+						lat: 33.48496, 
+						lng: -82.96234,
+						zoom: 9,
+						pitch: 80,
+						bearing: 0,
 						hideIcons: false,
-						label: "GA",
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
@@ -54,45 +52,30 @@
 					},
 
 					"4": {	
-						lat: 34.734776,
-						lng: -82.3735886,
-						zoom: 10,
-						pitch: 50,
-						bearing: 50,
+						lat: 35.45874,
+						lng: -82.89912,
+						zoom: 9,
+						pitch: 80,
+						bearing: 0,
 						hideIcons: false,
-						label: "SC",
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
 						rotateDirection: "cw"
 					},
 					"5": {	
-						lat: 37.54261,
-						lng: -85.10549,
-						zoom: 10,
-						pitch: 50,
-						bearing: 50,
+						lat: 38,
+						lng: -87,
+						zoom: 9,
+						pitch: 80,
+						bearing: 0,
 						hideIcons: false,
-						label: "KY",
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
 						rotateDirection: "cw"
 					},
-					"6": {	
-						lat: 35.73976,
-						lng: -86.1017,
-						zoom: 10,
-						pitch: 50,
-						bearing: 50,
-						hideIcons: false,
-						label: "TN",
-						rotateAnimation: false,
-						rotateLoop: true,
-						rotateSpeed: 5,
-						rotateDirection: "cw"
-					},
-					"7": {
+					"6": {
 						lat: 38.85408,
 						lng: -100.56146,
 						zoom: 5,
@@ -115,7 +98,7 @@
 						pitch: 61.04,
 						bearing: -63.45,
 						hideIcons: true,
-						label: "NC"
+						showMarker: true,
 					},
 					"2": {
 						lat: 35.6009452,
@@ -124,92 +107,146 @@
 						pitch: 0,
 						bearing: 0,
 						hideIcons: true,
-						label: "Asheville Area"
+						showMarker: true,
 					},
 					"3": {
-						lat: 35.6009452,
-						lng: -82.554015,
+						lat: 35.6010452,
+						lng: -82.553015,
 						zoom: 14,
 						pitch: 50,
 						bearing: 0,
 						hideIcons: true,
-						label: "Asheville"
+						showMarker: true,
 					},
 					"4": {
-						lat: 35.54336,
-						lng: -82.55679,
+						lat: 35.5920452,
+						lng: -82.535015,
 						zoom: 14,
-						pitch: 0,
+						pitch: 50,
 						bearing: 0,
 						hideIcons: true,
-						label: "Biltmore Forest"
+						showMarker: true,
 					},
 					"5": {
-						lat: 35.63263,
-						lng: -82.58099,
-						zoom: 13,
-						pitch: 82.37,
-						bearing: 112.57,
+						lat: 35.6130452,
+						lng: -82.575015,
+						zoom: 15,
+						pitch: 50,
+						bearing: 0,
 						hideIcons: true,
-						label: "Woodfin"
+						showMarker: true,
 					},
 					"6": {
-						lat:35.69736,
-						lng: -82.55985,
-						zoom: 15,
+						lat: 35.454963,
+						lng: -82.287148,
+						zoom: 14,
 						pitch: 62.50,
 						bearing: -20.34,
 						hideIcons: true,
-						label: "Weaverville"
+						showMarker: true,
 					},
 					"7": {
-						lat: 35.79766,
+						lat: 35.801,
 						lng: -82.68387,
-						zoom: 14,
+						zoom: 13,
 						pitch: 0,
 						bearing: -28.15,
 						hideIcons: true,
-						label: "Marshall"
+						showMarker: true,
 					},
 					"8": {
-						lat: 35.48732,
-						lng: -82.99050,
-						zoom: 13,
+						lat: 35.603155,
+						lng: -82.404074,
+						zoom: 13.5,
 						pitch: 10.45,
 						bearing: -19.20,
 						hideIcons: true,
-						label: "Waynesville"
+						showMarker: true,
 					},
 					"9": {
-						lat: 35.39085,
-						lng: -82.56729,
-						zoom: 13,
+						lat: 35.59995,
+						lng: -82.59181,
+						zoom: 14,
 						pitch: 34,
 						bearing: -14.40,
 						hideIcons: true,
-						label: "Mills River"
+						showMarker: true,
 					},
 					"10": {
-						lat: 35.43134,
-						lng: -82.49743,
+						lat: 35.4421,
+						lng: -82.249567,
 						zoom: 13,
-						pitch: 52,
-						bearing: -90.40,
+						pitch: 55,
+						bearing: -100.40,
 						hideIcons: true,
-						label: "Fletcher"
+						showMarker: true,
 					},
 					"11": {
-						lat: 35.61828,
-						lng: -82.32085,
+						lat: 35.434941,
+						lng: -82.500625,
+						zoom: 13.5,
+						pitch: 71.25,
+						bearing: 12.25,
+						hideIcons: true,
+						showMarker: true,
+					},
+					"12": {
+						lat: 35.603925,
+						lng: -82.403,
+						zoom: 13.5,
+						pitch: 71.25,
+						bearing: 12.25,
+						hideIcons: true,
+						showMarker: true,
+					},
+					"13": {
+						lat: 35.91524,
+						lng: -82.21283,
 						zoom: 13,
 						pitch: 71.25,
 						bearing: 12.25,
 						hideIcons: true,
-						label: "Black Mountain"
+						showMarker: true,
+					},
+					"14": {
+						lat: 35.997432,
+						lng: -82.25865,
+						zoom: 14,
+						pitch: 71.25,
+						bearing: 12.25,
+						hideIcons: true,
+						showMarker: true,
+					},
+					"15": {
+						lat: 35.922039,
+						lng: -81.178337,
+						zoom: 14,
+						pitch: 71.25,
+						bearing: 12.25,
+						hideIcons: true,
+						showMarker: true,
+					},
+					"16": {
+						lat: 35.663596,
+						lng: -82.344556,
+						zoom: 16.5,
+						pitch: 75.25,
+						bearing: 60.25,
+						hideIcons: true,
+						showMarker: true,
 					},
 				}
 			};
 		</script>
+		<section class="intro-video-chapter" aria-label="Intro video chapter" data-intro-chapter="true">
+			<video class="intro-video" autoplay muted loop playsinline preload="auto">
+				<source src="1.mp4" type="video/mp4">
+			</video>
+			<div class="intro-video-overlay">
+				<p>Scroll to start the map story</p>
+			</div>
+		</section>
+
 		<div class="wrapper">
 			<div class="figure-container">
 				<!-- This is an example of where a CMS might wrap the embed in a div -->
@@ -219,81 +256,143 @@
 			</div>
 
 				<p data-story-id="3628495" data-slide="1">
-					Go from Corlears Hook to Coenties Slip, and from thence, by Whitehall, northward. What do you see?&mdash;Posted like silent sentinels all around the town, stand thousands upon thousands of mortal men fixed in ocean reveries.
+					Hurricane Helene entered the Gulf of Mexico on September 24, 2024 as a Category 1 hurricane. As the system passed through the Gulf, abnormally high seasonal temperatures exacerbated the storm’s strength, building it up to a Category 4 hurricane over the next two days.
 				</p>
 
 				<p data-story-id="3628495" data-slide="2">				
-					Strange! Nothing will content them but the extremest limit of the land; loitering under the shady lee of yonder warehouses will not suffice. No. They must get just as nigh the water as.
+					On Sept 26, Helene made landfall in the Florida Big Bend region with wind speeds of 140 mph, bringing catastrophic flooding, extreme winds and tornadoes that devastated the southeastern US and southern Appalachia.
 				</p>
 
 				<p data-story-id="3628495" data-slide="3">
-					Once more. Say you are in the country; in some high land of lakes. Take almost any path you please, and ten to ne it carries you down in a dale, and leaves you there by a pool in the stream.
+					The system approached the border of Georgia, South Carolina and North Carolina late in the day on Sept 26, causing widespread destruction from flooding, landslides and strong winds. Hurricane-force winds spread as far east as coastal Georgia and southern South Carolina, and as far northwest as western North Carolina.
+
 				</p>
 
 				<p data-story-id="3628495" data-slide="4">
-					Should you ever be athirst in the great American desert, try this experiment, if your caravan happen to be supplied with a metaphysical professor. Yes, as every one knows, meditation and water are wedded for ever.
+					By the time Helene hit Asheville, it had “downgraded” to a tropical storm. However, eight to 10 inches of predecessor rainfall in the days prior caused the French Broad and Swannanoa Rivers to swell, resulting in up to 30 inches of rain in the hardest hit areas.
+
 				</p>
 
 				<p data-story-id="3628495" data-slide="5"> 
-					By reason of these things, then, the whaling voyage was welcome; the great flood-gates of the wonder-world swung open, and in the wild conceits that swayed me to my purpose.
+					On Sept. 27, the storm headed north, downgrading into a post-tropical storm as it moved into southern Kentucky. The storm made a slow, cyclonic loop and dissipated shortly after over north-central Tennessee.
 				</p>
-
-				<p data-story-id="3628495" data-slide="6">
-					With anxious grapnels I had sounded my pocket, and only brought up a few pieces of silver,&mdash;So, wherever you go, Ishmael, said I to myself, as I stood in the middle of a dreary.
-				</p>
-
-				<p data-story-id="3628495" data-slide="7">
-					Too expensive and jolly, again thought I, broad glare in the street, and hear the sounds of the tinkling glasses within. But go on, Ishmael, said I at last; don&rsquo;t you hear?
-				</p>
-
-						</div>
-
-						<div class="wrapper">
-			<div class="figure-container">
-				<!-- This is an example of where a CMS might wrap the embed in a div -->
-			</div>
-
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-				<p>
-					The first thing I did was to stumble over an ash-box in the porch.
-				</p>
-
-
-			
 		</div>
+
+		<div class="wrapper fl-scrolly-section fl-scrolly-section-no-flourish" data-story-id="3630197">
+			<figure class="photo-slide" data-story-id="3630197" data-slide="1" tabindex="0"> <!-- nc -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>In North Carolina, Asheville experienced this storm in what many referred to as a "1 in 1000 year" event.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="2" tabindex="0"> <!-- nc -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Water is a central character in the story of Helene. Our reporter walked the banks of the French and Swannanoa rivers as part of a report on why Asheville’s water supply went down and took so long to come back online.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="3" tabindex="0"> <!-- nc -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Debris litters the landscape after any major storm. But one woman, a luthier, decided to reuse some of the fallen tree wood to make a guitar. Our reporter visited the saw mill and her studio to tell this story of hope and renewal.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="4" tabindex="0"> <!-- Asheville 3 -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Even 18 months after the storm has passed, residents and officials are still asking what went wrong. Our reporter penetrated City Hall to find out why the city wasn’t better prepared and what officials have done to be ready for the next one.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="5" tabindex="0"> <!-- Asheville 4 -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Music served as a unifying force for a fractured community. Artists came together to lift up each other and their fellow North Carolinians. Our reporter canvassed music venues in the center of Asheville to record their songs and their words.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="6" tabindex="0"> <!-- Bat Cave -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Churches proved vital to recovery efforts in the days immediately following the storm. Our reporter traveled across the region, from Bat Cave to Asheville, to visit, sketch and paint five parishes that were central to people’s survival.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="7" tabindex="0"> <!-- Black Mountain -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Rushing waters displaced people’s possessions far and wide during the storm. From Asheville to Marshall and the Black Mountain region, our reporter traced lost and found items and even helped to return a few love letters to their rightful owners.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="8" tabindex="0"> <!-- French Broad River -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Wildlife suffers during a natural disaster, but some of the smallest creatures are often overlooked in the aftermath of loss. We talked to experts from the Tennessee border to the French Broad River in Swannanoa to learn about impacts to the region’s smaller victims.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="9" tabindex="0"> <!-- Emma -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Many official alerts were delivered in English, leaving non-native speakers unprepared for what was coming. Our reporter talked to a central figure in the Hispanic community to discuss the risk that communication failure poses to marginalized communities.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="10" tabindex="0"> <!-- Chimney Rock -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>The economy took a significant hit because of Helene, especially tourism. From Chimney Rock and Bat Cave to the famed historic Biltmore Village and the River Arts District, our reporter chronicled the business community’s slow but steady comeback.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="11" tabindex="0"> <!-- Fletcher -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>Children bore a particular burden during the storm. Our reporter traversed a large region including the town of Fletcher to capture the words of children who still have nightmares and worry they’re not safe.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="12" tabindex="0"> <!-- Swannanoa -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>One of the hardest-hit regions was Swannanoa because of its location at the nexus of two rivers that flooded and washed away hundreds of homes. Our reporter walked some of those properties with their owners to bear witness to the ravages of a storm.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="13" tabindex="0"> <!-- nc -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>In Micaville, a Presbyterian church was damaged by floodwaters. The pastors have received an initial $140,000 in FEMA funding to rebuild but are waiting on more than $300,000 from the government agency for mitigation repairs. Our reporter traveled throughout the region to capture similar stories about FEMA’s response.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="14" tabindex="0"> <!-- Green Mountain -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>One unheralded casualty of the storm is local post offices. Our reporters traveled to six regions that are still without these vital pieces of infrastructure to tell the story of residents who demand that their local postal service be restored.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="15" tabindex="0"> <!-- Taylorsville -->
+				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
+				<figcaption>
+					<p>One of the hallmarks of a natural disaster is the non-profits that emerge amid the chaos. Our reporter traveled to Taylorsville to interview helicopter pilots who helped drop supplies after Helene and will continue to offer help during future storms.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+			<figure class="photo-slide" data-story-id="3630197" data-slide="16" tabindex="0">
+				<img src="river.png" alt="French Broad and Swannanoa rivers after Hurricane Helene">
+				<figcaption>
+					<p>Water is a central character in the story of Helene. Our reporter walked the banks of the French and Swannanoa rivers as part of a report on why Asheville’s water supply went down and took so long to come back online.</p>
+					<a class="photo-slide-link" href="#">Read more</a>
+				</figcaption>
+			</figure>
+		</div>
+
 		<script src="flourish-scrolly.js?v=20260329-1"></script>
 	</body>
 </html>
