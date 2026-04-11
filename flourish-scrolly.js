@@ -61,6 +61,18 @@ var active_map_style = "";
 var map_camera_sequence = 0;
 var map_rotate_animation_frame = null;
 var map_icon_opacity_cache = {};
+var map_step_marker = null;
+var map_step_source_trigger = null;
+
+function setMapboxLoadingState(is_loading) {
+	if (!document.body || !document.body.classList) return;
+	document.body.classList.toggle("fl-mapbox-loading", !!is_loading);
+}
+
+function setBeforeFirstChapterState(is_before_first_chapter) {
+	if (!document.body || !document.body.classList) return;
+	document.body.classList.toggle("fl-before-first-chapter", !!is_before_first_chapter);
+}
 
 function getTriggerStep(el) {
 	return el && el.tagName === "A" ? el.parentNode : el;
@@ -91,7 +103,7 @@ function parseTriggerInfo(el) {
 }
 
 function getScrollyTriggers() {
-	return document.querySelectorAll("a[href*='#story/'], [data-story-id][data-slide]");
+	return document.querySelectorAll("a[href*='#story/'], [data-story-id][data-slide], [data-intro-chapter]");
 }
 
 function initLinks() {
@@ -143,11 +155,12 @@ function setActiveStep(step) {
 
 function setActiveStory(id) {
 	if (!id || id === active_story_id) return;
-	var next_index = story_index_by_id[id];
+	var has_index = Number.isFinite(story_index_by_id[id]);
+	var next_index = has_index ? story_index_by_id[id] : active_story_index;
 	active_story_id = id;
-	active_story_index = next_index;
+	if (has_index) active_story_index = next_index;
 	document.querySelectorAll(".fl-scrolly-sticky").forEach(function(sticky) {
-		var is_active = sticky.dataset.storyId === id;
+		var is_active = has_index && sticky.dataset.storyId === id;
 		var sticky_index = parseInt(sticky.dataset.storyIndex, 10);
 		var shift_x = sticky_index < next_index ? -72 : 72;
 		sticky.style.setProperty("--fl-scrolly-shift-x", shift_x + "px");
@@ -201,6 +214,13 @@ function initStoryTransitions() {
 }
 
 function updateStoryFromTrigger(el) {
+	if (el && el.dataset && el.dataset.introChapter !== undefined) {
+		setBeforeFirstChapterState(true);
+		stopContinuousRotation();
+		if (map_overlay) map_overlay.classList.add("fl-map-overlay-hidden");
+		return;
+	}
+
 	var trigger_info = parseTriggerInfo(el);
 	if (!trigger_info) return;
 
@@ -208,6 +228,7 @@ function updateStoryFromTrigger(el) {
 	var step = getTriggerStep(el);
 	var section = step.closest(".fl-scrolly-section");
 	var iframe = section ? section.querySelector(".flourish-embed iframe") : null;
+	setBeforeFirstChapterState(false);
 
 	setActiveStory(trigger_info.storyId);
 	updateMapboxOverlay(el, trigger_info);
@@ -304,6 +325,8 @@ function parseMapState(link, trigger_info) {
 	var rotate_direction_raw = getMapSetting(link, trigger_info, "mapRotateDirection", "rotateDirection");
 	var rotate_direction = String(rotate_direction_raw || "cw").toLowerCase() === "ccw" ? "ccw" : "cw";
 	var hide_icons = parseBooleanValue(String(getMapSetting(link, trigger_info, "mapHideIcons", "hideIcons") || ""));
+	var show_marker = parseBooleanValue(String(getMapSetting(link, trigger_info, "mapShowMarker", "showMarker") || ""));
+	var marker_color = String(getMapSetting(link, trigger_info, "mapMarkerColor", "markerColor") || "#ef4444");
 	var label = getMapSetting(link, trigger_info, "mapLabel", "label");
 	var style = getMapSetting(link, trigger_info, "mapStyle", "style");
 
@@ -317,12 +340,80 @@ function parseMapState(link, trigger_info) {
 		rotateLoop: rotate_loop,
 		rotateDirection: rotate_direction,
 		hideIcons: hide_icons,
+		showMarker: show_marker,
+		markerColor: marker_color,
 		rotateBy: Number.isFinite(rotate_by) ? rotate_by : 120,
 		rotateDuration: Number.isFinite(rotate_duration) ? Math.max(0, rotate_duration) : 1800,
 		rotateSpeed: Number.isFinite(rotate_speed) ? Math.max(0.1, rotate_speed) : 12,
 		label: label || "",
-		style: style || ""
+		style: style || "",
+		triggerEl: link || null
 	};
+}
+
+function clearMapStepMarker() {
+	if (!map_step_marker) return;
+	map_step_marker.remove();
+	map_step_marker = null;
+}
+
+function isMediaStepElement(el) {
+	if (!el || !el.classList) return false;
+	return el.classList.contains("photo-slide") || el.classList.contains("story-photo-step");
+}
+
+function buildMarkerSlideElement(state) {
+	var host = document.createElement("div");
+	host.className = "map-marker-slide-host";
+
+	var trigger_el = state && state.triggerEl ? state.triggerEl : null;
+	if (!trigger_el || !trigger_el.cloneNode) return host;
+
+	if (isMediaStepElement(trigger_el)) {
+		var clone = trigger_el.cloneNode(true);
+		clone.setAttribute("tabindex", "0");
+		clone.classList.remove("fl-scrolly-step", "fl-scrolly-step-active", "fl-scrolly-step-inactive");
+		clone.classList.add("map-marker-slide");
+		host.appendChild(clone);
+		return host;
+	}
+
+	var text_slide = document.createElement("div");
+	text_slide.className = "map-marker-text-slide";
+	text_slide.textContent = (trigger_el.textContent || "").trim();
+	host.appendChild(text_slide);
+	return host;
+}
+
+function setRelocatedSourceTrigger(trigger_el) {
+	if (map_step_source_trigger && map_step_source_trigger.classList) {
+		map_step_source_trigger.classList.remove("map-slide-relocated");
+	}
+
+	map_step_source_trigger = null;
+
+	if (!trigger_el || !trigger_el.classList) return;
+	trigger_el.classList.add("map-slide-relocated");
+	map_step_source_trigger = trigger_el;
+}
+
+function setMapStepMarker(state) {
+	if (!map_overlay_map || !window.mapboxgl || !state) return;
+
+	if (!state.showMarker) {
+		setRelocatedSourceTrigger(null);
+		clearMapStepMarker();
+		return;
+	}
+
+	clearMapStepMarker();
+
+	map_step_marker = new window.mapboxgl.Marker({
+		element: buildMarkerSlideElement(state),
+		anchor: "bottom"
+	});
+	map_step_marker.setLngLat(state.center).addTo(map_overlay_map);
+	setRelocatedSourceTrigger(state.triggerEl || null);
 }
 
 function setMapFog() {
@@ -381,6 +472,7 @@ function applyPendingMapState() {
 	var applyCamera = function() {
 		pending_map_state = null;
 		setMapIconVisibility(!state.hideIcons);
+		setMapStepMarker(state);
 		map_overlay_map.easeTo({
 			center: state.center,
 			zoom: state.zoom,
@@ -438,12 +530,14 @@ function initMapboxOverlay() {
 
 	if (!window.mapboxgl) {
 		map_overlay_notice.style.display = "block";
+		setMapboxLoadingState(false);
 		return;
 	}
 
 	var token = getMapboxToken();
 	if (!token) {
 		map_overlay_notice.style.display = "block";
+		setMapboxLoadingState(false);
 		return;
 	}
 
@@ -467,6 +561,7 @@ function initMapboxOverlay() {
 
 		map_overlay_map.on("style.load", function() {
 			map_is_ready = true;
+			setMapboxLoadingState(false);
 			setMapFog();
 			applyPendingMapState();
 		});
@@ -484,10 +579,18 @@ function initMapboxOverlay() {
 			.catch(function(err) {
 				map_overlay_notice.textContent = "Could not load style JSON: " + err.message;
 				map_overlay_notice.style.display = "block";
+				setMapboxLoadingState(false);
 			});
 	} else {
 		createMapWithStyle(default_style);
 	}
+}
+
+function setMapCaptionText(label) {
+	if (!map_overlay_caption) return;
+	var text = String(label || "").trim();
+	map_overlay_caption.textContent = text;
+	map_overlay_caption.style.display = text ? "block" : "none";
 }
 
 function updateMapboxOverlay(link, trigger_info) {
@@ -495,15 +598,42 @@ function updateMapboxOverlay(link, trigger_info) {
 
 	var state = parseMapState(link, trigger_info);
 	if (!state) {
+		setRelocatedSourceTrigger(null);
+		clearMapStepMarker();
 		map_overlay.classList.add("fl-map-overlay-hidden");
 		return;
 	}
 
-	map_overlay_caption.textContent = state.label;
+	setMapCaptionText(state.label);
 	map_overlay.classList.remove("fl-map-overlay-hidden");
 
 	pending_map_state = state;
 	if (!map_is_ready) return; // held until style.load fires
+	applyPendingMapState();
+}
+
+function initMapboxOverlayInitialState() {
+	if (document.body && document.body.dataset.mapStartHidden === "true") return;
+	if (!map_overlay) initMapboxOverlay();
+	var triggers = getScrollyTriggers();
+	if (!triggers || !triggers.length) return;
+
+	var first_trigger = triggers[0];
+	var trigger_info = parseTriggerInfo(first_trigger);
+	if (!trigger_info) return;
+
+	var state = parseMapState(first_trigger, trigger_info);
+	if (!state) return;
+
+	state.duration = 0;
+	state.rotateAnimation = false;
+	state.hideIcons = false;
+
+	setMapCaptionText(state.label);
+	map_overlay.classList.remove("fl-map-overlay-hidden");
+
+	pending_map_state = state;
+	if (!map_is_ready) return;
 	applyPendingMapState();
 }
 
@@ -537,8 +667,8 @@ function initStyles() {
 			"position: fixed;" +
 			"top: max(12px, 2vh);" +
 			"right: max(12px, 2vw);" +
-			"width: clamp(200px, 44vw, 300px);" +
-			"height: clamp(120px, 26vw, 180px);" +
+			"width: clamp(240px, 48vw, 420px);" +
+			"height: clamp(150px, 32vw, 280px);" +
 			"max-width: calc(100vw - 24px);" +
 			"max-height: calc(100vh - 24px);" +
 			"margin: 0;" +
@@ -559,6 +689,22 @@ function initStyles() {
 			"align-items: stretch;" +
 			"justify-content: center;" +
 			"overflow: hidden;" +
+		"}" +
+		".fl-mapbox-loading .fl-scrolly-sticky {" +
+			"opacity: 0 !important;" +
+			"visibility: hidden !important;" +
+			"pointer-events: none !important;" +
+		"}" +
+		".fl-mapbox-loading .flourish-embed {" +
+			"visibility: hidden;" +
+		"}" +
+		".fl-before-first-chapter .fl-scrolly-sticky {" +
+			"opacity: 0 !important;" +
+			"visibility: hidden !important;" +
+			"pointer-events: none !important;" +
+		"}" +
+		".fl-before-first-chapter .flourish-embed {" +
+			"visibility: hidden;" +
 		"}" +
 		".fl-scrolly-sticky figure, .fl-scrolly-sticky .flourish-embed, .fl-scrolly-sticky iframe {" +
 			"width: 100%;" +
@@ -608,9 +754,6 @@ function initStyles() {
 			"width: min(42vw, 380px);" +
 			"height: auto;" +	
 			"margin: 0 0 50vh;" +
-			"padding: 1.25em;" +
-			"background: #333;" +
-			"box-shadow: 3px 3px 5px rgba(0,0,0,0.1);" +
 			"font-family: Helvetica, sans-serif;" + 
 			"font-size: 15px;" +
 			"font-weight: 600;" +
@@ -629,7 +772,6 @@ function initStyles() {
 		"}" +
 		".fl-scrolly-section-active .fl-scrolly-step.fl-scrolly-step-active {" +
 			"opacity: 1;" +
-			"box-shadow: 0 14px 40px rgba(0,0,0,0.22);" +
 			"transform: translate3d(12px, 0, 0);" +
 		"}" +
 		".fl-scrolly-step.fl-scrolly-step-muted {" +
@@ -650,6 +792,7 @@ function initStyles() {
 			"z-index: 2;" +
 			"background: #05090f;" +
 			"padding: 0;" +
+			"pointer-events: none;" +
 			"transition: opacity 260ms ease, transform 300ms ease;" +
 			"opacity: 1;" +
 			"transform: translate3d(0, 0, 0);" +
@@ -719,12 +862,15 @@ function initStyles() {
 }
 
 function init() {
+	setMapboxLoadingState(true);
+	setBeforeFirstChapterState(true);
 	initLinks(); // Find suitable links and add styles and click handlers
 	initStories(); // Find embedded stories and reorganise the DOM around them
 	initStepTransitions(); // Prepare stagger timings for text panels
 	initIntersection(); // Initialise the scrolly triggers
 	initStyles(); // Add a stylesheet with required styles
 	initMapboxOverlay(); // Prepare optional Mapbox overlay
+	initMapboxOverlayInitialState(); // Show first chapter map position before scrolling
 	initStoryTransitions(); // Animate handoff between story sections
 }
 init();
