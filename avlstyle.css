@@ -4,12 +4,29 @@
                 background: white; 
                 color: white; 
             }
+
+			p {
+				font-family: "Lora", serif;
+                font-size:16px;
+			}
+
+            h1, h2, h3, h4, h5, h6 {
+                font-family: "Averia Libre", serif;
+            }
+            
+            
+            .lora {     
+            font-family: "Lora", serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            }
             .wrapper { 
                 width: 100%; 
                 max-width: 100%; 
                 padding-left: 5%;
                 margin: 0; 
-                font-family: georgia; 
+                                font-family: "Lora", serif; 
                 line-height: 1.5em; 
 				font-size: 15px;
             }
@@ -47,8 +64,8 @@
 
             .intro-video-overlay p {
                 margin: 0;
-                font-family: Georgia, serif;
-                font-size: 14px;
+                font-family: "Lora", serif;
+                font-size: 16px;
                 letter-spacing: 0.04em;
                 text-transform: uppercase;
                 color: rgba(255, 255, 255, 0.9);
@@ -60,6 +77,7 @@
         
         overflow: hidden;
     }
+    
 
 .photo-slide img {
   width: 100%;
@@ -95,7 +113,8 @@
 .photo-slide-link {
     display: inline-block;
     margin-top: 8px;
-    color: #fff;
+    color: #d4874c;
+    font-size:  15px;
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -116,10 +135,22 @@
 .fl-scrolly-section .fl-scrolly-step {
     margin: 0 0 62vh !important;
     padding: 1.25em;
-    background: #f3ede1;
+    background: white;
     color: #1f1a17;
     border: 1px solid rgba(54, 40, 24, 0.15);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.fl-scrolly-section .fl-scrolly-step:not(.photo-slide) {
+    font-family: "Lora", serif;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+.fl-scrolly-section .fl-scrolly-step:not(.photo-slide) p {
+    margin: 0;
+    font-weight: 400;
 }
 
 .fl-scrolly-section-active .fl-scrolly-step.fl-scrolly-step-active {
@@ -162,56 +193,30 @@
     grid-column: 1;
 }
 
-.fl-scrolly-section-no-flourish > .photo-slide {
-    grid-column: 2;
-    position: sticky;
-    top: max(12px, 2vh);
-    margin: 0;
-    align-self: start;
-    max-width: 500px;
-    justify-self: end;
-    width: 100%;
-    padding: 8px 8px;
-    background: white;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(4px);
-}
-
-.fl-scrolly-section-no-flourish > .photo-slide.fl-scrolly-step {
-    width: 100% !important;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-}
-
-.fl-scrolly-section-no-flourish > .photo-slide.fl-scrolly-step:not(.fl-scrolly-step-active) {
-    opacity: 0 !important;
-    visibility: hidden;
-    pointer-events: none;
-}
-
 .fl-scrolly-section-no-flourish > .fl-scrolly-step:not(.fl-scrolly-step-active) {
     opacity: 0 !important;
     visibility: hidden;
     pointer-events: none;
 }
 
-.fl-scrolly-section-no-flourish > .photo-slide img {
-    height: calc(100vh - 24px);
-    height: calc(100dvh - 24px);
-    max-height: calc(100vh - 24px);
-    object-fit: cover;
+.fl-scrolly-section-no-flourish > .marker-only-step.fl-scrolly-step {
+    width: 100% !important;
+    min-height: 88vh;
+    margin: 0 0 12vh !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: none !important;
+    filter: none !important;
 }
 
 @media (max-width: 900px) {
     .fl-scrolly-section-no-flourish {
         display: block;
-    }
-
-    .fl-scrolly-section-no-flourish > .photo-slide {
-        position: relative;
-        top: auto;
-        margin: 0 0 28px;
-        max-width: 100%;
     }
 }
 
@@ -244,11 +249,27 @@
 
 .map-marker-slide-host .map-marker-slide.photo-slide {
     margin: 0;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.82);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
     padding: 8px;
     max-width: 360px;
+}
+
+.map-marker-slide-host .map-marker-slide.map-marker-card {
+    margin: 0;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 28px rgba(109, 109, 109, 0.45);
+    padding: 8px;
+    max-width: 360px;
+    transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.map-marker-slide-host:hover .map-marker-slide.map-marker-card,
+.map-marker-slide-host:focus-within .map-marker-slide.map-marker-card {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    transform: translateY(-4px) scale(1.01);
 }
 
 .map-marker-slide-host .map-marker-slide.photo-slide img {
@@ -258,24 +279,41 @@
     object-fit: cover;
 }
 
-.map-marker-slide-host .map-marker-slide.photo-slide figcaption {
+.map-marker-slide-host .map-marker-slide.map-marker-card img {
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+    object-fit: cover;
+}
+
+
+
+.map-marker-slide-host .map-marker-slide.map-marker-card figcaption {
     position: static;
     opacity: 1;
     transform: none;
     margin: 0;
-    background: #f3ede1;
     color: #1f1a17;
     padding: 10px 12px;
+}
+
+.map-marker-card-title {
+    margin: 0 0 6px;
+    font-size: clamp(15px, 2vw, 20px);
+    line-height: 1.2;
+    font-weight: 700;
+    color: #224050;
 }
 
 .map-marker-slide-host .map-marker-slide.photo-slide .photo-slide-link {
     display: inline-block;
     color: #1f1a17;
+    font-size: 10px;
 }
 
 .map-marker-slide-host .map-marker-slide.story-photo-step {
     margin: 0;
-    background: #f3ede1;
+    background: rgba(243, 237, 225, 0.82);
     color: #1f1a17;
     border: 1px solid rgba(54, 40, 24, 0.15);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
@@ -283,10 +321,44 @@
     max-width: 360px;
 }
 
+.map-marker-text-slide {
+    margin: 0;
+    max-width: 360px;
+    background: rgba(243, 237, 225, 0.9);
+    color: #1f1a17;
+    border: 1px solid rgba(54, 40, 24, 0.15);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    line-height: 1.45;
+    font-size: 14px;
+    font-family: Georgia, serif;
+}
+
+.map-step-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: var(--map-step-marker-color, #ef4444);
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
 
 
 .map-slide-relocated {
     opacity: 0 !important;
     pointer-events: none !important;
+}
+
+.map-slide-relocated.map-slide-hover-preview {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.fl-scrolly-section-no-flourish > .photo-slide.fl-scrolly-step.map-slide-relocated.map-slide-hover-preview {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 
