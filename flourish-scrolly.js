@@ -1,44 +1,42 @@
 function initStories() {
 	var stories = document.querySelectorAll(".flourish-embed");
-	// TODO Ignore non-story embeds
 	for (var i = 0; i < stories.length; i++) {
-		var story = stories[i],
-		    id = story.dataset.src.split("/")[1],
-		    h = story.getAttribute("data-height") || "75vh",
-		    last_link = last_link_per_story["story-" + id],
-		    common_parent = commonAncestor(story, last_link);
+		var story = stories[i];
+		var id = story.dataset.src.split("/")[1];
+		var h = story.getAttribute("data-height") || "75vh";
+		var lastLink = last_link_per_story["story-" + id];
+		var commonParent = commonAncestor(story, lastLink);
 
 		story.id = "story-" + id;
 
-		var target_div = document.createElement("div");
-		target_div.classList.add("fl-scrolly-section");
-		target_div.style.position = "relative";
-		target_div.style.paddingBottom = "1px";
-		target_div.id = "fl-scrolly-section-" + id;
-		target_div.dataset.storyId = id;
-		target_div.dataset.storyIndex = i;
+		var targetDiv = document.createElement("div");
+		targetDiv.classList.add("fl-scrolly-section");
+		targetDiv.style.position = "relative";
+		targetDiv.style.paddingBottom = "1px";
+		targetDiv.id = "fl-scrolly-section-" + id;
+		targetDiv.dataset.storyId = id;
+		targetDiv.dataset.storyIndex = i;
 		story_index_by_id[id] = i;
 
-		common_parent.classList.add("fl-scrolly-parent-" + id);
+		commonParent.classList.add("fl-scrolly-parent-" + id);
 
 		var children = document.querySelectorAll(".fl-scrolly-parent-" + id + " > *");
 		story.__found_story__ = false;
 		for (var j = 0; j < children.length; j++) {
 			var child = children[j];
 			if (story.__found_story__) {
-				target_div.appendChild(child);
+				targetDiv.appendChild(child);
 				if (child.querySelector(".fl-scrolly-last-link-story-" + id)) break;
-			}
-			else {
-				var embed = child.id == "story-" + id || child.querySelector("#story-" + id);
+			} else {
+				var embed = child.id === "story-" + id || child.querySelector("#story-" + id);
 				if (embed) {
 					story.__found_story__ = true;
 					child.style.setProperty("--fl-scrolly-height", h);
 					child.classList.add("fl-scrolly-sticky");
 					child.dataset.storyId = id;
 					child.dataset.storyIndex = i;
-					common_parent.insertBefore(target_div, child);
-					target_div.appendChild(child);
+					commonParent.insertBefore(targetDiv, child);
+					targetDiv.appendChild(child);
 				}
 			}
 		}
@@ -52,7 +50,6 @@ var active_story_index = -1;
 var active_step = null;
 var map_overlay = null;
 var map_overlay_root = null;
-var map_overlay_caption = null;
 var map_overlay_notice = null;
 var map_overlay_map = null;
 var map_is_ready = false;
@@ -61,18 +58,7 @@ var active_map_style = "";
 var map_camera_sequence = 0;
 var map_rotate_animation_frame = null;
 var map_icon_opacity_cache = {};
-var map_step_marker = null;
-var map_step_source_trigger = null;
-
-function setMapboxLoadingState(is_loading) {
-	if (!document.body || !document.body.classList) return;
-	document.body.classList.toggle("fl-mapbox-loading", !!is_loading);
-}
-
-function setBeforeFirstChapterState(is_before_first_chapter) {
-	if (!document.body || !document.body.classList) return;
-	document.body.classList.toggle("fl-before-first-chapter", !!is_before_first_chapter);
-}
+var map_step_markers = [];
 
 function getTriggerStep(el) {
 	return el && el.tagName === "A" ? el.parentNode : el;
@@ -92,13 +78,13 @@ function parseTriggerInfo(el) {
 		}
 	}
 
-	var story_id = el.dataset ? el.dataset.storyId : null;
-	var slide_number = el.dataset ? parseFloat(el.dataset.slide) : null;
-	if (!story_id || !Number.isFinite(slide_number)) return null;
+	var storyId = el.dataset ? el.dataset.storyId : null;
+	var slideNumber = el.dataset ? parseFloat(el.dataset.slide) : null;
+	if (!storyId || !Number.isFinite(slideNumber)) return null;
 
 	return {
-		storyId: story_id,
-		slideNumber: slide_number
+		storyId: storyId,
+		slideNumber: slideNumber
 	};
 }
 
@@ -110,14 +96,13 @@ function initLinks() {
 	var triggers = getScrollyTriggers();
 	for (var i = 0; i < triggers.length; i++) {
 		var trigger = triggers[i];
-		var trigger_info = parseTriggerInfo(trigger);
-		if (!trigger_info) continue;
+		var triggerInfo = parseTriggerInfo(trigger);
+		if (!triggerInfo) continue;
 
 		var step = getTriggerStep(trigger);
-		var id = trigger_info.storyId;
+		var id = triggerInfo.storyId;
 		last_link_per_story["story-" + id] = step;
-		trigger.classList.add("fl-scrolly-link");
-		trigger.classList.add("story-" + id);
+		trigger.classList.add("fl-scrolly-link", "story-" + id);
 		step.classList.add("fl-scrolly-step");
 
 		trigger.addEventListener("click", function(e) {
@@ -126,22 +111,23 @@ function initLinks() {
 			updateStoryFromTrigger(this);
 		});
 	}
+
 	for (var link in last_link_per_story) {
 		last_link_per_story[link].classList.add("fl-scrolly-last-link-" + link);
 	}
 }
 
 function initIntersection() {
-	var observer = new IntersectionObserver(function(entries, observer) {
+	var observer = new IntersectionObserver(function(entries) {
 		entries.forEach(function(entry) {
-			if (entry.isIntersecting) {
-				setActiveStep(getTriggerStep(entry.target));
-				updateStoryFromTrigger(entry.target);
-			}
+			if (!entry.isIntersecting) return;
+			setActiveStep(getTriggerStep(entry.target));
+			updateStoryFromTrigger(entry.target);
 		});
-	}, { rootMargin: "0px 0px -50% 0px" });
+	}, { rootMargin: "0px 0px -45% 0px", threshold: 0.02 });
+
 	getScrollyTriggers().forEach(function(trigger) {
-		return observer.observe(trigger);
+		observer.observe(trigger);
 	});
 }
 
@@ -155,35 +141,20 @@ function setActiveStep(step) {
 
 function setActiveStory(id) {
 	if (!id || id === active_story_id) return;
-	var has_index = Number.isFinite(story_index_by_id[id]);
-	var next_index = has_index ? story_index_by_id[id] : active_story_index;
+	var hasIndex = Number.isFinite(story_index_by_id[id]);
+	var nextIndex = hasIndex ? story_index_by_id[id] : active_story_index;
 	active_story_id = id;
-	if (has_index) active_story_index = next_index;
-	document.querySelectorAll(".fl-scrolly-sticky").forEach(function(sticky) {
-		var is_active = has_index && sticky.dataset.storyId === id;
-		var sticky_index = parseInt(sticky.dataset.storyIndex, 10);
-		var shift_x = sticky_index < next_index ? -72 : 72;
-		sticky.style.setProperty("--fl-scrolly-shift-x", shift_x + "px");
-		sticky.classList.toggle("fl-scrolly-active", is_active);
-		sticky.classList.toggle("fl-scrolly-inactive", !is_active);
-	});
-	document.querySelectorAll(".fl-scrolly-section").forEach(function(section) {
-		var is_active = section.dataset.storyId === id;
-		section.classList.toggle("fl-scrolly-section-active", is_active);
-		section.querySelectorAll(".fl-scrolly-step").forEach(function(step, index) {
-			step.style.setProperty("--fl-step-delay", Math.min(index * 70, 280) + "ms");
-			step.classList.toggle("fl-scrolly-step-visible", is_active);
-			step.classList.toggle("fl-scrolly-step-muted", !is_active);
-		});
-	});
-}
+	if (hasIndex) active_story_index = nextIndex;
 
-function initStepTransitions() {
+	document.querySelectorAll(".fl-scrolly-sticky").forEach(function(sticky) {
+		var isActive = hasIndex && sticky.dataset.storyId === id;
+		sticky.classList.toggle("fl-scrolly-active", isActive);
+		sticky.classList.toggle("fl-scrolly-inactive", !isActive);
+		sticky.style.display = isActive ? "flex" : "none";
+	});
+
 	document.querySelectorAll(".fl-scrolly-section").forEach(function(section) {
-		section.querySelectorAll(".fl-scrolly-step").forEach(function(step, index) {
-			step.dataset.stepIndex = index;
-			step.style.setProperty("--fl-step-delay", Math.min(index * 70, 280) + "ms");
-		});
+		section.classList.toggle("fl-scrolly-section-active", section.dataset.storyId === id);
 	});
 }
 
@@ -192,18 +163,15 @@ function initStoryTransitions() {
 	if (!sections.length) return;
 
 	var observer = new IntersectionObserver(function(entries) {
-		var next_section = null;
+		var next = null;
 		entries.forEach(function(entry) {
-			if (entry.isIntersecting) {
-				if (!next_section || entry.intersectionRatio > next_section.intersectionRatio) {
-					next_section = entry;
-				}
-			}
+			if (!entry.isIntersecting) return;
+			if (!next || entry.intersectionRatio > next.intersectionRatio) next = entry;
 		});
-		if (next_section) setActiveStory(next_section.target.dataset.storyId);
+		if (next) setActiveStory(next.target.dataset.storyId);
 	}, {
 		threshold: [0.2, 0.4, 0.6],
-		rootMargin: "-15% 0px -35% 0px"
+		rootMargin: "-10% 0px -30% 0px"
 	});
 
 	sections.forEach(function(section) {
@@ -215,38 +183,33 @@ function initStoryTransitions() {
 
 function updateStoryFromTrigger(el) {
 	if (el && el.dataset && el.dataset.introChapter !== undefined) {
-		setBeforeFirstChapterState(true);
 		stopContinuousRotation();
-		if (map_overlay) map_overlay.classList.add("fl-map-overlay-hidden");
+		clearMapStepMarker();
+		setVideoTransitionActive(false);
 		return;
 	}
 
-	var trigger_info = parseTriggerInfo(el);
-	if (!trigger_info) return;
+	var triggerInfo = parseTriggerInfo(el);
+	if (!triggerInfo) return;
 
-	var slide_id = trigger_info.slideNumber - 1;
+	var slideId = triggerInfo.slideNumber - 1;
 	var step = getTriggerStep(el);
 	var section = step.closest(".fl-scrolly-section");
 	var iframe = section ? section.querySelector(".flourish-embed iframe") : null;
-	setBeforeFirstChapterState(false);
 
-	setActiveStory(trigger_info.storyId);
-	updateMapboxOverlay(el, trigger_info);
+	var hideTrajectory = section && section.dataset && section.dataset.hideTrajectory === "true";
+	setTrajectoryLayerVisibility(!hideTrajectory);
+
+	setActiveStory(triggerInfo.storyId);
+	updateMapboxOverlay(triggerInfo);
 	if (!iframe) return;
-	iframe.src = iframe.src.replace(/#slide-.*/, "") + "#slide-" + slide_id;
+
+	iframe.src = iframe.src.replace(/#slide-.*/, "") + "#slide-" + slideId;
 }
 
 function parseMapValue(value) {
 	var parsed = parseFloat(value);
 	return Number.isFinite(parsed) ? parsed : null;
-}
-
-function getMapboxToken() {
-	if (window.FL_SCROLLY_MAPBOX_TOKEN) return window.FL_SCROLLY_MAPBOX_TOKEN;
-	if (document.body && document.body.dataset.mapboxToken) return document.body.dataset.mapboxToken;
-	var token_meta = document.querySelector('meta[name="mapbox-token"]');
-	if (token_meta) return token_meta.getAttribute("content");
-	return "";
 }
 
 function parseBooleanValue(value) {
@@ -255,165 +218,258 @@ function parseBooleanValue(value) {
 	return normalized === "true" || normalized === "1" || normalized === "yes";
 }
 
+function getMapboxToken() {
+	if (window.FL_SCROLLY_MAPBOX_TOKEN) return window.FL_SCROLLY_MAPBOX_TOKEN;
+	if (document.body && document.body.dataset.mapboxToken) return document.body.dataset.mapboxToken;
+	var tokenMeta = document.querySelector('meta[name="mapbox-token"]');
+	if (tokenMeta) return tokenMeta.getAttribute("content");
+	return "";
+}
+
 function stopContinuousRotation() {
-	if (map_rotate_animation_frame !== null) {
-		cancelAnimationFrame(map_rotate_animation_frame);
-		map_rotate_animation_frame = null;
-	}
+	if (map_rotate_animation_frame === null) return;
+	cancelAnimationFrame(map_rotate_animation_frame);
+	map_rotate_animation_frame = null;
 }
 
-function getStepConfig(story_id, slide_number) {
+function getStepConfig(storyId, slideNumber) {
 	var config = window.FL_SCROLLY_STEP_CONFIG || window.flScrollyStepConfig;
-	if (!config || !story_id || !Number.isFinite(slide_number)) return null;
-
-	var story_key = String(story_id);
-	var slide_key = String(slide_number);
-
-	if (config[story_key] && config[story_key][slide_key]) return config[story_key][slide_key];
-	if (config[story_key + ":" + slide_key]) return config[story_key + ":" + slide_key];
-	if (config[story_key + "-" + slide_key]) return config[story_key + "-" + slide_key];
-
+	if (!config || !storyId || !Number.isFinite(slideNumber)) return null;
+	var storyKey = String(storyId);
+	var slideKey = String(slideNumber);
+	if (config[storyKey] && config[storyKey][slideKey]) return config[storyKey][slideKey];
+	if (config[storyKey + ":" + slideKey]) return config[storyKey + ":" + slideKey];
+	if (config[storyKey + "-" + slideKey]) return config[storyKey + "-" + slideKey];
 	return null;
 }
 
-function getMapSetting(el, trigger_info, dataset_key, config_key) {
-	if (el && el.dataset && el.dataset[dataset_key] !== undefined) return el.dataset[dataset_key];
-	var config = getStepConfig(trigger_info.storyId, trigger_info.slideNumber);
-	if (config && config[config_key] !== undefined && config[config_key] !== null) return config[config_key];
-	return null;
+function getMapSetting(triggerInfo, configKey) {
+	var config = getStepConfig(triggerInfo.storyId, triggerInfo.slideNumber);
+	if (!config) return null;
+	if (config[configKey] === undefined || config[configKey] === null) return null;
+	return config[configKey];
 }
 
-function startContinuousRotation(sequence, state) {
-	stopContinuousRotation();
-	var last_frame_time = null;
-	var direction = state.rotateDirection === "ccw" ? -1 : 1;
+function parseMapState(triggerInfo) {
+	var lat = parseMapValue(getMapSetting(triggerInfo, "lat"));
+	var lng = parseMapValue(getMapSetting(triggerInfo, "lng"));
+	var zoom = parseMapValue(getMapSetting(triggerInfo, "zoom"));
+	var pitch = parseMapValue(getMapSetting(triggerInfo, "pitch"));
+	var bearing = parseMapValue(getMapSetting(triggerInfo, "bearing"));
+	var hideMap = parseBooleanValue(String(getMapSetting(triggerInfo, "hideMap") || ""));
+	var duration = parseMapValue(getMapSetting(triggerInfo, "duration"));
+	var rotateBy = parseMapValue(getMapSetting(triggerInfo, "rotateBy"));
+	var rotateDuration = parseMapValue(getMapSetting(triggerInfo, "rotateDuration"));
+	var rotateSpeed = parseMapValue(getMapSetting(triggerInfo, "rotateSpeed"));
+	var rotateAnimation = parseBooleanValue(String(getMapSetting(triggerInfo, "rotateAnimation") || ""));
+	var rotateLoop = parseBooleanValue(String(getMapSetting(triggerInfo, "rotateLoop") || ""));
+	var rotateDirectionRaw = getMapSetting(triggerInfo, "rotateDirection");
+	var rotateDirection = String(rotateDirectionRaw || "cw").toLowerCase() === "ccw" ? "ccw" : "cw";
+	var hideIcons = parseBooleanValue(String(getMapSetting(triggerInfo, "hideIcons") || ""));
+	var markerColor = String(getMapSetting(triggerInfo, "markerColor") || "#ef4444");
+	var rawMarkers = getMapSetting(triggerInfo, "markers");
+	var markers = [];
 
-	var tick = function(timestamp) {
-		if (sequence !== map_camera_sequence || !map_overlay_map) {
-			stopContinuousRotation();
-			return;
+	if (Array.isArray(rawMarkers)) {
+		for (var i = 0; i < rawMarkers.length; i++) {
+			var marker = rawMarkers[i];
+			if (!marker || typeof marker !== "object") continue;
+			var markerLat = parseMapValue(marker.lat);
+			var markerLng = parseMapValue(marker.lng);
+			if (!Number.isFinite(markerLat) || !Number.isFinite(markerLng)) continue;
+			var markerShow = marker.showMarker === undefined ? true : parseBooleanValue(String(marker.showMarker));
+			markers.push({
+				lngLat: [markerLng, markerLat],
+				markerColor: String(marker.markerColor || marker.color || markerColor || "#ef4444"),
+				showMarker: markerShow,
+				title: marker.title ? String(marker.title) : "",
+				text: marker.text ? String(marker.text) : "",
+				imageSrc: marker.imageSrc ? String(marker.imageSrc) : "",
+				imageAlt: marker.imageAlt ? String(marker.imageAlt) : "",
+				linkHref: marker.linkHref ? String(marker.linkHref) : ""
+			});
 		}
+	}
 
-		if (last_frame_time === null) {
-			last_frame_time = timestamp;
-		}
-		var elapsed_seconds = (timestamp - last_frame_time) / 1000;
-		last_frame_time = timestamp;
+	var hasExplicitCenter = Number.isFinite(lat) && Number.isFinite(lng);
+	if (!hasExplicitCenter && markers.length) {
+		lng = markers[0].lngLat[0];
+		lat = markers[0].lngLat[1];
+		hasExplicitCenter = true;
+	}
+	if (!hasExplicitCenter) return null;
 
-		var next_bearing = map_overlay_map.getBearing() + (state.rotateSpeed * direction * elapsed_seconds);
-		map_overlay_map.setBearing(next_bearing);
-		map_rotate_animation_frame = requestAnimationFrame(tick);
-	};
-
-	map_rotate_animation_frame = requestAnimationFrame(tick);
-}
-
-function parseMapState(link, trigger_info) {
-	var lat = parseMapValue(getMapSetting(link, trigger_info, "mapLat", "lat"));
-	var lng = parseMapValue(getMapSetting(link, trigger_info, "mapLng", "lng"));
-	if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-
-	var zoom = parseMapValue(getMapSetting(link, trigger_info, "mapZoom", "zoom"));
-	var pitch = parseMapValue(getMapSetting(link, trigger_info, "mapPitch", "pitch"));
-	var bearing = parseMapValue(getMapSetting(link, trigger_info, "mapBearing", "bearing"));
-	var duration = parseMapValue(getMapSetting(link, trigger_info, "mapDuration", "duration"));
-	var rotate_by = parseMapValue(getMapSetting(link, trigger_info, "mapRotateBy", "rotateBy"));
-	var rotate_duration = parseMapValue(getMapSetting(link, trigger_info, "mapRotateDuration", "rotateDuration"));
-	var rotate_speed = parseMapValue(getMapSetting(link, trigger_info, "mapRotateSpeed", "rotateSpeed"));
-	var rotate_animation = parseBooleanValue(String(getMapSetting(link, trigger_info, "mapRotateAnimation", "rotateAnimation") || ""));
-	var rotate_loop = parseBooleanValue(String(getMapSetting(link, trigger_info, "mapRotateLoop", "rotateLoop") || ""));
-	var rotate_direction_raw = getMapSetting(link, trigger_info, "mapRotateDirection", "rotateDirection");
-	var rotate_direction = String(rotate_direction_raw || "cw").toLowerCase() === "ccw" ? "ccw" : "cw";
-	var hide_icons = parseBooleanValue(String(getMapSetting(link, trigger_info, "mapHideIcons", "hideIcons") || ""));
-	var show_marker = parseBooleanValue(String(getMapSetting(link, trigger_info, "mapShowMarker", "showMarker") || ""));
-	var marker_color = String(getMapSetting(link, trigger_info, "mapMarkerColor", "markerColor") || "#ef4444");
-	var label = getMapSetting(link, trigger_info, "mapLabel", "label");
-	var style = getMapSetting(link, trigger_info, "mapStyle", "style");
+	var showMarkerSetting = getMapSetting(triggerInfo, "showMarker");
+	var showMarker = showMarkerSetting === null ? markers.length > 0 : parseBooleanValue(String(showMarkerSetting || ""));
+	var label = getMapSetting(triggerInfo, "label");
+	var style = getMapSetting(triggerInfo, "style");
 
 	return {
 		center: [lng, lat],
 		zoom: Number.isFinite(zoom) ? Math.max(1, Math.min(22, zoom)) : 12,
 		pitch: Number.isFinite(pitch) ? Math.max(0, Math.min(85, pitch)) : 45,
 		bearing: Number.isFinite(bearing) ? bearing : 0,
+		hideMap: hideMap,
 		duration: Number.isFinite(duration) ? Math.max(0, duration) : 1300,
-		rotateAnimation: rotate_animation,
-		rotateLoop: rotate_loop,
-		rotateDirection: rotate_direction,
-		hideIcons: hide_icons,
-		showMarker: show_marker,
-		markerColor: marker_color,
-		rotateBy: Number.isFinite(rotate_by) ? rotate_by : 120,
-		rotateDuration: Number.isFinite(rotate_duration) ? Math.max(0, rotate_duration) : 1800,
-		rotateSpeed: Number.isFinite(rotate_speed) ? Math.max(0.1, rotate_speed) : 12,
+		rotateAnimation: rotateAnimation,
+		rotateLoop: rotateLoop,
+		rotateDirection: rotateDirection,
+		hideIcons: hideIcons,
+		showMarker: showMarker,
+		markerColor: markerColor,
+		markers: markers,
+		rotateBy: Number.isFinite(rotateBy) ? rotateBy : 120,
+		rotateDuration: Number.isFinite(rotateDuration) ? Math.max(0, rotateDuration) : 1800,
+		rotateSpeed: Number.isFinite(rotateSpeed) ? Math.max(0.1, rotateSpeed) : 12,
 		label: label || "",
-		style: style || "",
-		triggerEl: link || null
+		style: style || ""
 	};
 }
 
+function getInitialMapState() {
+	var triggers = getScrollyTriggers();
+	for (var i = 0; i < triggers.length; i++) {
+		var info = parseTriggerInfo(triggers[i]);
+		if (!info) continue;
+		var state = parseMapState(info);
+		if (!state || state.hideMap) continue;
+		return state;
+	}
+	return null;
+}
+
 function clearMapStepMarker() {
-	if (!map_step_marker) return;
-	map_step_marker.remove();
-	map_step_marker = null;
+	if (!map_step_markers.length) return;
+	map_step_markers.forEach(function(marker) {
+		marker.remove();
+	});
+	map_step_markers = [];
 }
 
-function isMediaStepElement(el) {
-	if (!el || !el.classList) return false;
-	return el.classList.contains("photo-slide") || el.classList.contains("story-photo-step");
+function setVideoTransitionActive(active) {
+	if (!document.body) return;
+	document.body.classList.toggle("fl-video-transition-active", !!active);
 }
 
-function buildMarkerSlideElement(state) {
+function buildCustomMarkerCard(marker, state) {
+	var card = document.createElement("figure");
+	card.className = "map-marker-slide map-marker-card";
+
+	if (marker.imageSrc) {
+		var media = document.createElement("div");
+		media.className = "map-marker-card-media";
+
+		var img = document.createElement("img");
+		img.src = marker.imageSrc;
+		img.alt = marker.imageAlt || "Story location";
+		media.appendChild(img);
+
+		if (marker.linkHref) {
+			var imageLink = document.createElement("a");
+			imageLink.className = "map-marker-image-link";
+			imageLink.href = marker.linkHref;
+			imageLink.target = "_blank";
+			imageLink.rel = "noopener noreferrer";
+			imageLink.textContent = "Read more";
+			imageLink.addEventListener("pointerdown", function() {
+				this.classList.add("is-pressed");
+			});
+			imageLink.addEventListener("pointerup", function() {
+				this.classList.remove("is-pressed");
+			});
+			imageLink.addEventListener("pointercancel", function() {
+				this.classList.remove("is-pressed");
+			});
+			imageLink.addEventListener("mouseleave", function() {
+				this.classList.remove("is-pressed");
+			});
+			imageLink.addEventListener("blur", function() {
+				this.classList.remove("is-pressed");
+			});
+			media.appendChild(imageLink);
+		}
+
+		card.appendChild(media);
+	}
+
+	var caption = document.createElement("figcaption");
+	if (marker.title) {
+		var heading = document.createElement("h4");
+		heading.className = "map-marker-card-title";
+		heading.textContent = marker.title;
+		caption.appendChild(heading);
+	}
+	if (marker.text) {
+		var body = document.createElement("p");
+		body.textContent = marker.text;
+		caption.appendChild(body);
+	}
+	if (!caption.childNodes.length && state && state.label) {
+		var fallback = document.createElement("p");
+		fallback.textContent = state.label;
+		caption.appendChild(fallback);
+	}
+	card.appendChild(caption);
+
+	return card;
+}
+
+function buildMarkerSlideElement(marker, state) {
 	var host = document.createElement("div");
 	host.className = "map-marker-slide-host";
-
-	var trigger_el = state && state.triggerEl ? state.triggerEl : null;
-	if (!trigger_el || !trigger_el.cloneNode) return host;
-
-	if (isMediaStepElement(trigger_el)) {
-		var clone = trigger_el.cloneNode(true);
-		clone.setAttribute("tabindex", "0");
-		clone.classList.remove("fl-scrolly-step", "fl-scrolly-step-active", "fl-scrolly-step-inactive");
-		clone.classList.add("map-marker-slide");
-		host.appendChild(clone);
-		return host;
-	}
-
-	var text_slide = document.createElement("div");
-	text_slide.className = "map-marker-text-slide";
-	text_slide.textContent = (trigger_el.textContent || "").trim();
-	host.appendChild(text_slide);
+	host.appendChild(buildCustomMarkerCard(marker, state));
 	return host;
-}
-
-function setRelocatedSourceTrigger(trigger_el) {
-	if (map_step_source_trigger && map_step_source_trigger.classList) {
-		map_step_source_trigger.classList.remove("map-slide-relocated");
-	}
-
-	map_step_source_trigger = null;
-
-	if (!trigger_el || !trigger_el.classList) return;
-	trigger_el.classList.add("map-slide-relocated");
-	map_step_source_trigger = trigger_el;
 }
 
 function setMapStepMarker(state) {
 	if (!map_overlay_map || !window.mapboxgl || !state) return;
+	clearMapStepMarker();
+	if (!state.showMarker) return;
 
-	if (!state.showMarker) {
-		setRelocatedSourceTrigger(null);
-		clearMapStepMarker();
-		return;
+	var markers = Array.isArray(state.markers) ? state.markers.filter(function(marker) {
+		return marker && marker.showMarker !== false;
+	}) : [];
+
+	if (!markers.length) {
+		markers = [{
+			lngLat: state.center,
+			markerColor: state.markerColor,
+			showMarker: true,
+			title: "",
+			text: state.label || "",
+			imageSrc: "",
+			imageAlt: "",
+			linkHref: ""
+		}];
 	}
 
-	clearMapStepMarker();
+	for (var i = 0; i < markers.length; i++) {
+		var marker = markers[i];
+		if (!marker || !Array.isArray(marker.lngLat)) continue;
+		var markerElement = buildMarkerSlideElement(marker, state);
+		var mapMarker = new window.mapboxgl.Marker({ element: markerElement, anchor: "bottom" });
+		mapMarker.setLngLat(marker.lngLat).addTo(map_overlay_map);
+		map_step_markers.push(mapMarker);
+	}
+}
 
-	map_step_marker = new window.mapboxgl.Marker({
-		element: buildMarkerSlideElement(state),
-		anchor: "bottom"
+function setTrajectoryLayerVisibility(visible) {
+	if (!map_overlay_map || !map_overlay_map.getLayer) return;
+	var trajectoryLayers = [
+		"untitled-spreadsheet-sheet1-8-csv",
+		"untitled-layer",
+		"untitled-layer copy",
+		"untitled-layer copy 1",
+		"untitled-layer copy 2"
+	];
+	var visibility = visible ? "visible" : "none";
+	trajectoryLayers.forEach(function(id) {
+		try {
+			if (map_overlay_map.getLayer(id)) {
+				map_overlay_map.setLayoutProperty(id, "visibility", visibility);
+			}
+		} catch (e) {}
 	});
-	map_step_marker.setLngLat(state.center).addTo(map_overlay_map);
-	setRelocatedSourceTrigger(state.triggerEl || null);
 }
 
 function setMapFog() {
@@ -425,33 +481,30 @@ function setMapFog() {
 	});
 }
 
-function setMapIconVisibility(show_icons) {
+function setMapIconVisibility(showIcons) {
 	if (!map_overlay_map || !map_overlay_map.getStyle || !map_overlay_map.setPaintProperty) return;
 	var style = map_overlay_map.getStyle();
 	if (!style || !Array.isArray(style.layers)) return;
-	var style_key = style.sprite || active_map_style || "default";
-	if (!map_icon_opacity_cache[style_key]) map_icon_opacity_cache[style_key] = {};
-	var cache = map_icon_opacity_cache[style_key];
+	var styleKey = style.sprite || active_map_style || "default";
+	if (!map_icon_opacity_cache[styleKey]) map_icon_opacity_cache[styleKey] = {};
+	var cache = map_icon_opacity_cache[styleKey];
 
 	style.layers.forEach(function(layer) {
 		if (layer.type !== "symbol") return;
 		if (!layer.layout || layer.layout["icon-image"] === undefined) return;
-
 		if (cache[layer.id] === undefined) {
 			var current = map_overlay_map.getPaintProperty(layer.id, "icon-opacity");
 			cache[layer.id] = current === undefined ? 1 : current;
 		}
-
-		var next_opacity = show_icons ? cache[layer.id] : 0;
 		try {
-			map_overlay_map.setPaintProperty(layer.id, "icon-opacity", next_opacity);
+			map_overlay_map.setPaintProperty(layer.id, "icon-opacity", showIcons ? cache[layer.id] : 0);
 		} catch (e) {}
 	});
 }
 
-function fixStyleJson(style_json) {
-	if (!style_json || !Array.isArray(style_json.layers)) return style_json;
-	style_json.layers.forEach(function(layer) {
+function fixStyleJson(styleJson) {
+	if (!styleJson || !Array.isArray(styleJson.layers)) return styleJson;
+	styleJson.layers.forEach(function(layer) {
 		if (layer.type !== "symbol" || !layer.layout) return;
 		var img = layer.layout["icon-image"];
 		if (img !== null && img !== undefined && typeof img === "object" && !Array.isArray(img)) {
@@ -460,7 +513,28 @@ function fixStyleJson(style_json) {
 			if (fixed) layer.layout["icon-image"] = fixed;
 		}
 	});
-	return style_json;
+	return styleJson;
+}
+
+function startContinuousRotation(sequence, state) {
+	stopContinuousRotation();
+	var lastFrameTime = null;
+	var direction = state.rotateDirection === "ccw" ? -1 : 1;
+
+	var tick = function(timestamp) {
+		if (sequence !== map_camera_sequence || !map_overlay_map) {
+			stopContinuousRotation();
+			return;
+		}
+		if (lastFrameTime === null) lastFrameTime = timestamp;
+		var elapsedSeconds = (timestamp - lastFrameTime) / 1000;
+		lastFrameTime = timestamp;
+		var nextBearing = map_overlay_map.getBearing() + (state.rotateSpeed * direction * elapsedSeconds);
+		map_overlay_map.setBearing(nextBearing);
+		map_rotate_animation_frame = requestAnimationFrame(tick);
+	};
+
+	map_rotate_animation_frame = requestAnimationFrame(tick);
 }
 
 function applyPendingMapState() {
@@ -487,8 +561,7 @@ function applyPendingMapState() {
 				if (sequence !== map_camera_sequence) return;
 				if (state.rotateLoop) {
 					startContinuousRotation(sequence, state);
-				}
-				else {
+				} else {
 					var direction = state.rotateDirection === "ccw" ? -1 : 1;
 					map_overlay_map.rotateTo(state.bearing + (state.rotateBy * direction), {
 						duration: state.rotateDuration,
@@ -510,8 +583,9 @@ function applyPendingMapState() {
 
 function initMapboxOverlay() {
 	if (map_overlay) return;
+
 	map_overlay = document.createElement("div");
-	map_overlay.classList.add("fl-map-overlay", "fl-map-overlay-hidden");
+	map_overlay.classList.add("fl-map-overlay");
 
 	map_overlay_root = document.createElement("div");
 	map_overlay_root.classList.add("fl-map-overlay-root");
@@ -520,128 +594,94 @@ function initMapboxOverlay() {
 	map_overlay_notice.classList.add("fl-map-overlay-notice");
 	map_overlay_notice.textContent = "Mapbox token missing. Set window.FL_SCROLLY_MAPBOX_TOKEN.";
 
-	map_overlay_caption = document.createElement("p");
-	map_overlay_caption.classList.add("fl-map-overlay-caption");
-
 	map_overlay.appendChild(map_overlay_root);
 	map_overlay.appendChild(map_overlay_notice);
-	map_overlay.appendChild(map_overlay_caption);
 	document.body.appendChild(map_overlay);
 
 	if (!window.mapboxgl) {
 		map_overlay_notice.style.display = "block";
-		setMapboxLoadingState(false);
 		return;
 	}
 
 	var token = getMapboxToken();
 	if (!token) {
 		map_overlay_notice.style.display = "block";
-		setMapboxLoadingState(false);
 		return;
 	}
 
 	window.mapboxgl.accessToken = token;
 	map_overlay_notice.style.display = "none";
 
-	var default_style = (document.body && document.body.dataset.mapStyle) || "mapbox://styles/mapbox/satellite-streets-v12";
-	active_map_style = default_style;
+	var defaultStyle = (document.body && document.body.dataset.mapStyle) || "mapbox://styles/mapbox/satellite-streets-v12";
+	active_map_style = defaultStyle;
 
-	function createMapWithStyle(resolved_style) {
+	function createMapWithStyle(resolvedStyle) {
+		var initialState = getInitialMapState();
+		if (initialState) pending_map_state = initialState;
 		map_overlay_map = new window.mapboxgl.Map({
 			container: map_overlay_root,
-			style: resolved_style,
-			center: [-73.9857, 40.7484],
-			zoom: 10,
-			pitch: 45,
-			bearing: 0,
+			style: resolvedStyle,
+			center: initialState ? initialState.center : [-73.9857, 40.7484],
+			zoom: initialState ? initialState.zoom : 10,
+			pitch: initialState ? initialState.pitch : 45,
+			bearing: initialState ? initialState.bearing : 0,
 			interactive: false,
 			attributionControl: false
 		});
 
 		map_overlay_map.on("style.load", function() {
 			map_is_ready = true;
-			setMapboxLoadingState(false);
 			setMapFog();
 			applyPendingMapState();
 		});
-
-
 	}
 
-	// For local/relative JSON files: fetch, patch bare icon-image objects, then pass cleaned JSON
-	// to the Map constructor so Mapbox never sees the broken expressions.
-	// For mapbox:// URLs: pass directly (Mapbox handles auth internally).
-	if (default_style.indexOf("mapbox://") !== 0) {
-		fetch(default_style)
-			.then(function(r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-			.then(function(json) { createMapWithStyle(fixStyleJson(json)); })
+	if (defaultStyle.indexOf("mapbox://") !== 0) {
+		fetch(defaultStyle)
+			.then(function(r) {
+				if (!r.ok) throw new Error("HTTP " + r.status);
+				return r.json();
+			})
+			.then(function(json) {
+				createMapWithStyle(fixStyleJson(json));
+			})
 			.catch(function(err) {
 				map_overlay_notice.textContent = "Could not load style JSON: " + err.message;
 				map_overlay_notice.style.display = "block";
-				setMapboxLoadingState(false);
 			});
 	} else {
-		createMapWithStyle(default_style);
+		createMapWithStyle(defaultStyle);
 	}
 }
 
-function setMapCaptionText(label) {
-	if (!map_overlay_caption) return;
-	var text = String(label || "").trim();
-	map_overlay_caption.textContent = text;
-	map_overlay_caption.style.display = text ? "block" : "none";
-}
-
-function updateMapboxOverlay(link, trigger_info) {
+function updateMapboxOverlay(triggerInfo) {
 	if (!map_overlay) initMapboxOverlay();
-
-	var state = parseMapState(link, trigger_info);
+	var state = parseMapState(triggerInfo);
 	if (!state) {
-		setRelocatedSourceTrigger(null);
+		if (map_overlay) map_overlay.style.display = "block";
+		setVideoTransitionActive(false);
 		clearMapStepMarker();
-		map_overlay.classList.add("fl-map-overlay-hidden");
 		return;
 	}
-
-	setMapCaptionText(state.label);
-	map_overlay.classList.remove("fl-map-overlay-hidden");
-
-	pending_map_state = state;
-	if (!map_is_ready) return; // held until style.load fires
-	applyPendingMapState();
-}
-
-function initMapboxOverlayInitialState() {
-	if (document.body && document.body.dataset.mapStartHidden === "true") return;
-	if (!map_overlay) initMapboxOverlay();
-	var triggers = getScrollyTriggers();
-	if (!triggers || !triggers.length) return;
-
-	var first_trigger = triggers[0];
-	var trigger_info = parseTriggerInfo(first_trigger);
-	if (!trigger_info) return;
-
-	var state = parseMapState(first_trigger, trigger_info);
-	if (!state) return;
-
-	state.duration = 0;
-	state.rotateAnimation = false;
-	state.hideIcons = false;
-
-	setMapCaptionText(state.label);
-	map_overlay.classList.remove("fl-map-overlay-hidden");
-
+	if (state.hideMap) {
+		stopContinuousRotation();
+		clearMapStepMarker();
+		pending_map_state = null;
+		if (map_overlay) map_overlay.style.display = "none";
+		setVideoTransitionActive(true);
+		return;
+	}
+	if (map_overlay) map_overlay.style.display = "block";
+	setVideoTransitionActive(false);
 	pending_map_state = state;
 	if (!map_is_ready) return;
 	applyPendingMapState();
 }
 
-
 function parents(node) {
-	var nodes = [node]
+	var nodes = [node];
 	for (; node; node = node.parentNode) {
-		nodes.unshift(node)
+		nodes.unshift(node);
 	}
 	return nodes;
 }
@@ -649,228 +689,38 @@ function parents(node) {
 function commonAncestor(node1, node2) {
 	var parents1 = parents(node1);
 	var parents2 = parents(node2);
-	if (parents1[0] != parents2[0]) throw "No common ancestor!";
+	if (parents1[0] !== parents2[0]) throw new Error("No common ancestor");
 	for (var i = 0; i < parents1.length; i++) {
-		if (parents1[i] != parents2[i]) return parents1[i - 1]
+		if (parents1[i] !== parents2[i]) return parents1[i - 1];
 	}
+	return parents1[parents1.length - 1];
 }
 
 function initStyles() {
-	// TODO. The user should be able to override these!
 	var style = document.createElement("style");
 	style.innerHTML = "" +
-		".fl-scrolly-section {" +
-			"position: relative;" +
-			"z-index: 10;" +
-		"}" +
-		".fl-scrolly-sticky {" +
-			"position: fixed;" +
-			"top: max(12px, 2vh);" +
-			"right: max(12px, 2vw);" +
-			"width: clamp(240px, 48vw, 420px);" +
-			"height: clamp(150px, 32vw, 280px);" +
-			"max-width: calc(100vw - 24px);" +
-			"max-height: calc(100vh - 24px);" +
-			"margin: 0;" +
-			"box-sizing: border-box;" +
-			"padding: 10px;" +
-			"background: rgba(12, 20, 26, 0.9);" +
-			"backdrop-filter: blur(4px);" +
-			"border: 1px solid rgba(255, 255, 255, 0.18);" +
-			"box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);" +
-			"opacity: 0;" +
-			"visibility: hidden;" +
-			"transform: translate3d(calc(var(--fl-scrolly-shift-x, 72px) * 0.45), 20px, 0) scale(0.97);" +
-			"filter: saturate(0.8) blur(2px);" +
-			"transition: opacity 900ms ease, transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), filter 900ms ease, visibility 0s linear 900ms;" +
-			"will-change: opacity, transform, filter;" +
-			"z-index: 40;" +
-			"display: flex;" +
-			"align-items: stretch;" +
-			"justify-content: center;" +
-			"overflow: hidden;" +
-		"}" +
-		".fl-mapbox-loading .fl-scrolly-sticky {" +
-			"opacity: 0 !important;" +
-			"visibility: hidden !important;" +
-			"pointer-events: none !important;" +
-		"}" +
-		".fl-mapbox-loading .flourish-embed {" +
-			"visibility: hidden;" +
-		"}" +
-		".fl-before-first-chapter .fl-scrolly-sticky {" +
-			"opacity: 0 !important;" +
-			"visibility: hidden !important;" +
-			"pointer-events: none !important;" +
-		"}" +
-		".fl-before-first-chapter .flourish-embed {" +
-			"visibility: hidden;" +
-		"}" +
-		".fl-scrolly-sticky figure, .fl-scrolly-sticky .flourish-embed, .fl-scrolly-sticky iframe {" +
-			"width: 100%;" +
-			"height: 100%;" +
-			"max-height: 100vh;" +
-			"max-height: 100dvh;" +
-			"margin: 0;" +
-		"}" +
-		".fl-scrolly-sticky .flourish-embed {" +
-			"position: relative !important;" +
-			"padding-bottom: 0 !important;" +
-			"min-height: 100%;" +
-			"height: 100% !important;" +
-			"overflow: hidden;" +
-			"border-radius: 8px;" +
-		"}" +
-		".fl-scrolly-sticky .flourish-embed iframe {" +
-			"position: absolute !important;" +
-			"inset: 0 !important;" +
-			"top: 0 !important;" +
-			"height: 100% !important;" +
-			"width: 100% !important;" +
-		"}" +
-		".fl-scrolly-sticky figure {" +
-			"display: flex;" +
-			"align-items: stretch;" +
-			"margin: 0;" +
-			"padding: 0;" +
-		"}" +
-		".fl-scrolly-sticky.fl-scrolly-active {" +
-			"opacity: 1;" +
-			"visibility: visible;" +
-			"transform: translate3d(0, 0, 0) scale(1);" +
-			"filter: none;" +
-			"transition: opacity 900ms ease, transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), filter 900ms ease, visibility 0s linear 0s;" +
-			"z-index: 45;" +
-			"pointer-events: none;" +
-		"}" +
-		".fl-scrolly-sticky.fl-scrolly-inactive {" +
-			"opacity: 0;" +
-			"visibility: hidden;" +
-			"pointer-events: none;" +
-		"}" +
-		".fl-scrolly-section .fl-scrolly-step {" +
-			"position: relative;" +
-			"z-index: 20;" +
-			"width: min(42vw, 380px);" +
-			"height: auto;" +	
-			"margin: 0 0 50vh;" +
-			"font-family: Helvetica, sans-serif;" + 
-			"font-size: 15px;" +
-			"font-weight: 600;" +
-			"line-height: 1.3;" +
-			"opacity: 0.22;" +
-			"text-align: left;" +
-			"transform: translate3d(-20px, 18px, 0); /* Workaround for Safari https://stackoverflow.com/questions/50224855/not-respecting-z-index-on-safari-with-position-sticky */" +
-			"filter: blur(0.5px);" +
-			"transition: opacity 700ms ease, transform 850ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 700ms ease, filter 700ms ease;" +
-			"transition-delay: var(--fl-step-delay, 0ms);" +
-		"}" +
-		".fl-scrolly-section-active .fl-scrolly-step.fl-scrolly-step-visible {" +
-			"opacity: 0.72;" +
-			"transform: translate3d(0, 0, 0);" +
-			"filter: none;" +
-		"}" +
-		".fl-scrolly-section-active .fl-scrolly-step.fl-scrolly-step-active {" +
-			"opacity: 1;" +
-			"transform: translate3d(12px, 0, 0);" +
-		"}" +
-		".fl-scrolly-step.fl-scrolly-step-muted {" +
-			"opacity: 0.14;" +
-			"transform: translate3d(-28px, 24px, 0);" +
-			"filter: blur(1px);" +
-		"}" +
-		".fl-scrolly-section .fl-scrolly-step a {" +
-			"color: inherit;" +
-		"}" +
-		".fl-map-overlay {" +
-			"position: fixed;" +
-			"top: 0;" +
-			"left: 0;" +
-			"width: 100vw;" +
-			"height: 100vh;" +
-			"height: 100dvh;" +
-			"z-index: 2;" +
-			"background: #05090f;" +
-			"padding: 0;" +
-			"pointer-events: none;" +
-			"transition: opacity 260ms ease, transform 300ms ease;" +
-			"opacity: 1;" +
-			"transform: translate3d(0, 0, 0);" +
-		"}" +
-		".fl-map-overlay-root {" +
-			"width: 100%;" +
-			"height: 100%;" +
-			"overflow: hidden;" +
-			"border-radius: 0;" +
-		"}" +
-		".fl-map-overlay-root canvas {" +
-			"border-radius: 0;" +
-		"}" +
-		".fl-map-overlay-caption {" +
-			"position: absolute;" +
-			"left: 20px;" +
-			"right: 20px;" +
-			"bottom: 14px;" +
-			"margin: 0;" +
-			"padding: 8px 10px;" +
-			"background: rgba(3, 7, 18, 0.48);" +
-			"backdrop-filter: blur(2px);" +
-			"border-radius: 8px;" +
-			"font: 600 12px/1.3 Helvetica, Arial, sans-serif;" +
-			"letter-spacing: 0.02em;" +
-			"color: rgba(255, 255, 255, 0.92);" +
-			"white-space: nowrap;" +
-			"overflow: hidden;" +
-			"text-overflow: ellipsis;" +
-		"}" +
-		".fl-map-overlay-notice {" +
-			"display: none;" +
-			"position: absolute;" +
-			"top: 16px;" +
-			"left: 16px;" +
-			"right: 16px;" +
-			"margin: 0;" +
-			"padding: 8px 10px;" +
-			"background: rgba(3, 7, 18, 0.72);" +
-			"border-radius: 8px;" +
-			"font: 600 12px/1.3 Helvetica, Arial, sans-serif;" +
-			"color: #fecaca;" +
-		"}" +
-		".fl-map-overlay.fl-map-overlay-hidden {" +
-			"opacity: 0;" +
-			"transform: scale(1.02);" +
-			"pointer-events: none;" +
-		"}" +
-		"@media (max-width: 900px) {" +
-			".fl-scrolly-sticky {" +
-				"top: auto;" +
-				"right: 10px;" +
-				"bottom: 10px;" +
-				"left: 10px;" +
-				"width: auto;" +
-				"height: clamp(180px, 34vw, 240px);" +
-				"max-height: 34vh;" +
-			"}" +
-			".fl-scrolly-section .fl-scrolly-step {" +
-				"width: calc(100% - 20px);" +
-				"font-size: clamp(16px, 5vw, 24px);" +
-				"line-height: 1.4;" +
-				"padding: 1em;" +
-			"}" +
-		"}";
+		".fl-scrolly-section { position: relative; z-index: 10; }" +
+		".fl-scrolly-sticky { position: fixed; top: max(12px, 2vh); right: max(12px, 2vw); width: clamp(240px, 48vw, 420px); height: clamp(150px, 32vw, 280px); max-width: calc(100vw - 24px); max-height: calc(100vh - 24px); margin: 0; box-sizing: border-box; padding: 10px; background: #05090f; border: 1px solid rgba(255,255,255,0.18); z-index: 40; display: none; align-items: stretch; justify-content: center; overflow: hidden; }" +
+		".fl-scrolly-sticky figure, .fl-scrolly-sticky .flourish-embed, .fl-scrolly-sticky iframe { width: 100%; height: 100%; max-height: 100vh; margin: 0; }" +
+		".fl-scrolly-sticky .flourish-embed { position: relative !important; padding-bottom: 0 !important; min-height: 100%; height: 100% !important; overflow: hidden; border-radius: 8px; background: #05090f; }" +
+		".fl-scrolly-sticky .flourish-embed iframe { position: absolute !important; inset: 0 !important; height: 100% !important; width: 100% !important; }" +
+		".fl-scrolly-section .fl-scrolly-step { position: relative; z-index: 20; width: min(42vw, 380px); margin: 0 0 50vh; text-align: left; }" +
+		".fl-map-overlay { position: fixed; inset: 0; z-index: 2; background: #05090f; pointer-events: auto; }" +
+		".fl-map-overlay-root { width: 100%; height: 100%; overflow: hidden; pointer-events: none; }" +
+		".fl-map-overlay-root canvas { pointer-events: none; }" +
+		".fl-map-overlay-root .mapboxgl-marker, .fl-map-overlay-root .mapboxgl-marker *, .fl-map-overlay-root .map-marker-slide-host, .fl-map-overlay-root .map-marker-slide-host * { pointer-events: auto; }" +
+		".fl-map-overlay-notice { display: none; position: absolute; top: 16px; left: 16px; right: 16px; margin: 0; padding: 8px 10px; background: rgba(3, 7, 18, 0.72); border-radius: 8px; font: 600 12px/1.3 Helvetica, Arial, sans-serif; color: #fecaca; }" +
+		"@media (max-width: 900px) { .fl-scrolly-sticky { top: auto; right: 10px; bottom: 10px; left: 10px; width: auto; height: clamp(180px, 34vw, 240px); max-height: 34vh; } .fl-scrolly-section .fl-scrolly-step { width: calc(100% - 20px); } }";
 	document.body.appendChild(style);
 }
 
 function init() {
-	setMapboxLoadingState(true);
-	setBeforeFirstChapterState(true);
-	initLinks(); // Find suitable links and add styles and click handlers
-	initStories(); // Find embedded stories and reorganise the DOM around them
-	initStepTransitions(); // Prepare stagger timings for text panels
-	initIntersection(); // Initialise the scrolly triggers
-	initStyles(); // Add a stylesheet with required styles
-	initMapboxOverlay(); // Prepare optional Mapbox overlay
-	initMapboxOverlayInitialState(); // Show first chapter map position before scrolling
-	initStoryTransitions(); // Animate handoff between story sections
+	initLinks();
+	initStories();
+	initIntersection();
+	initStyles();
+	initMapboxOverlay();
+	initStoryTransitions();
 }
+
 init();
