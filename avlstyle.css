@@ -10,7 +10,7 @@ body {
 
 p {
 	font-family: "Lora", serif;
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 1.5;
 }
 
@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0;
 	font-family: "Lora", serif;
 	line-height: 1.5;
-	font-size: 15px;
+	font-size: 14px;
 }
 
 .flourish-embed.flourish-chart {
@@ -62,7 +62,7 @@ h1, h2, h3, h4, h5, h6 {
 .intro-video-overlay p {
 	margin: 0;
 	font-family: "Lora", serif;
-	font-size: 16px;
+	font-size: 14px;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
 	color: rgba(255, 255, 255, 0.9);
@@ -70,13 +70,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .fl-scrolly-section .fl-scrolly-step {
 	margin: 0 0 62vh;
-	padding: 1.25em;
+	padding: 1.05em;
 	background: #fffaf3;
 	color: #1f1a17;
 	border: 1px solid rgba(54, 40, 24, 0.15);
 	border-left: 6px solid #d4874c;
 	font-family: "Lora", serif;
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 1.4;
 	font-weight: 400;
 }
@@ -141,9 +141,9 @@ body.fl-video-transition-active .transition-media-bg {
 .transition-text-block {
 	position: relative;
 	z-index: 25;
-	width: min(42vw, 380px);
+	width: min(38vw, 340px);
 	margin: 0 0 50vh;
-	padding: 1.25em;
+	padding: 1.05em;
 	background: #fffaf3;
 	border: 1px solid rgba(54, 40, 24, 0.15);
 	border-left: 6px solid #d4874c;
@@ -161,7 +161,7 @@ body.fl-video-transition-active .transition-media-bg {
 
 .transition-text-block p {
 	margin: 0;
-	font-size: 17px;
+	font-size: 15px;
 	line-height: 1.5;
 	color: #2e241d;
 }
@@ -169,7 +169,7 @@ body.fl-video-transition-active .transition-media-bg {
 .map-marker-slide-host {
 	position: relative;
 	transform: translateY(-18px);
-	max-width: min(82vw, 360px);
+	max-width: min(78vw, 320px);
 	pointer-events: auto;
 }
 
@@ -191,8 +191,8 @@ body.fl-video-transition-active .transition-media-bg {
 	border: 1px solid rgba(255, 255, 255, 0.18);
 	border-left: 6px solid #d4874c;
 	box-shadow: 0 12px 28px rgba(109, 109, 109, 0.45);
-	padding: 8px;
-	max-width: 360px;
+	padding: 7px;
+	max-width: 320px;
 	pointer-events: auto;
 }
 
@@ -205,7 +205,7 @@ body.fl-video-transition-active .transition-media-bg {
 .map-marker-slide-host .map-marker-slide.map-marker-card img {
 	width: 100%;
 	height: auto;
-	max-height: 240px;
+	max-height: 210px;
 	object-fit: cover;
 	display: block;
 }
@@ -250,13 +250,13 @@ body.fl-video-transition-active .transition-media-bg {
 	position: static;
 	margin: 0;
 	color: #1f1a17;
-	padding: 10px 12px;
+	padding: 8px 10px;
 	pointer-events: auto;
 }
 
 .map-marker-card-title {
 	margin: 0 0 6px;
-	font-size: clamp(15px, 2vw, 20px);
+	font-size: clamp(14px, 1.8vw, 18px);
 	line-height: 1.2;
 	font-weight: 700;
 	color: #224050;
@@ -301,6 +301,6 @@ body.fl-video-transition-active .transition-media-bg {
 	}
 
 	.transition-text-block p {
-		font-size: 16px;
+		font-size: 14px;
 	}
 }
