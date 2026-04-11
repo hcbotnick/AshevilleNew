@@ -13,4 +13,280 @@
                 line-height: 1.5em; 
 				font-size: 15px;
             }
-            
+
+            .flourish-embed.flourish-chart {
+                width: 100%;
+                max-width: 900px;
+                margin: 0 auto;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .intro-video-chapter {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+                background: #000;
+            }
+
+            .intro-video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            .intro-video-overlay {
+                position: absolute;
+                inset: auto 0 0 0;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .intro-video-overlay p {
+                margin: 0;
+                font-family: Georgia, serif;
+                font-size: 14px;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+    .photo-slide {
+        position: relative;
+        margin: 0 0 24px;
+        
+        overflow: hidden;
+    }
+
+.photo-slide img {
+  width: 100%;
+  display: block;
+  
+}
+
+.photo-slide figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 14px;
+    color: #fff;
+    line-height: 1.4;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.12));
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.photo-slide figcaption p {
+    margin: 0;
+}
+
+.photo-slide:hover figcaption,
+.photo-slide:focus-within figcaption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.photo-slide-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.photo-slide-link:hover,
+.photo-slide-link:focus {
+    color: #d7ecff;
+}
+
+@media (hover: none) {
+    .photo-slide figcaption {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.fl-scrolly-section .fl-scrolly-step {
+    margin: 0 0 62vh !important;
+    padding: 1.25em;
+    background: #f3ede1;
+    color: #1f1a17;
+    border: 1px solid rgba(54, 40, 24, 0.15);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.fl-scrolly-section-active .fl-scrolly-step.fl-scrolly-step-active {
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+}
+
+.story-photo-step p {
+    margin: 0;
+}
+
+.story-photo-step .step-photo {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    border-radius: 8px;
+}
+
+.story-photo-step .photo-slide-link {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+}
+
+.story-photo-step .step-photo:hover + .photo-slide-link,
+.story-photo-step .photo-slide-link:focus {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.fl-scrolly-section-no-flourish {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) clamp(320px, 40vw, 560px);
+    gap: 20px;
+    align-items: start;
+}
+
+.fl-scrolly-section-no-flourish > p {
+    grid-column: 1;
+}
+
+.fl-scrolly-section-no-flourish > .photo-slide {
+    grid-column: 2;
+    position: sticky;
+    top: max(12px, 2vh);
+    margin: 0;
+    align-self: start;
+    max-width: 500px;
+    justify-self: end;
+    width: 100%;
+    padding: 8px 8px;
+    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+}
+
+.fl-scrolly-section-no-flourish > .photo-slide.fl-scrolly-step {
+    width: 100% !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.fl-scrolly-section-no-flourish > .photo-slide.fl-scrolly-step:not(.fl-scrolly-step-active) {
+    opacity: 0 !important;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.fl-scrolly-section-no-flourish > .fl-scrolly-step:not(.fl-scrolly-step-active) {
+    opacity: 0 !important;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.fl-scrolly-section-no-flourish > .photo-slide img {
+    height: calc(100vh - 24px);
+    height: calc(100dvh - 24px);
+    max-height: calc(100vh - 24px);
+    object-fit: cover;
+}
+
+@media (max-width: 900px) {
+    .fl-scrolly-section-no-flourish {
+        display: block;
+    }
+
+    .fl-scrolly-section-no-flourish > .photo-slide {
+        position: relative;
+        top: auto;
+        margin: 0 0 28px;
+        max-width: 100%;
+    }
+}
+
+@media (hover: none) {
+    .story-photo-step .photo-slide-link {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+}
+
+.map-marker-slide-host {
+    position: relative;
+    transform: translateY(-18px);
+    max-width: min(82vw, 360px);
+    pointer-events: auto;
+}
+
+.map-marker-slide-host::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    margin: -1px auto 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid #ffffff;
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.28));
+}
+
+.map-marker-slide-host .map-marker-slide.photo-slide {
+    margin: 0;
+    background: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    padding: 8px;
+    max-width: 360px;
+}
+
+.map-marker-slide-host .map-marker-slide.photo-slide img {
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+    object-fit: cover;
+}
+
+.map-marker-slide-host .map-marker-slide.photo-slide figcaption {
+    position: static;
+    opacity: 1;
+    transform: none;
+    margin: 0;
+    background: #f3ede1;
+    color: #1f1a17;
+    padding: 10px 12px;
+}
+
+.map-marker-slide-host .map-marker-slide.photo-slide .photo-slide-link {
+    display: inline-block;
+    color: #1f1a17;
+}
+
+.map-marker-slide-host .map-marker-slide.story-photo-step {
+    margin: 0;
+    background: #f3ede1;
+    color: #1f1a17;
+    border: 1px solid rgba(54, 40, 24, 0.15);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    max-width: 360px;
+}
+
+
+
+.map-slide-relocated {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
