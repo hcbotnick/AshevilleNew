@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Scrolly example</title>
-		<link rel="stylesheet" href="avlstyle.css">
+		<link rel="stylesheet" href="avlstyle.css?v=20260411-5">
 		<link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
 		<script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
 	</head>
@@ -14,13 +14,23 @@
 			window.FL_SCROLLY_MARKER_LAT_OFFSET = -0.0025;
 			window.FL_SCROLLY_STEP_CONFIG = {
 				"3628495": {
+					"0": {
+						lat: 30.2,
+						lng: -84.3,
+						zoom: 4,
+						pitch: 0,
+						bearing: 0,
+						hideIcons: true,
+						label: "trajectory-overview",
+						duration: 1000
+					},
 					"1": {
 						lat: 24.86784, 
 						lng: -85.9577,
 						zoom: 9,
 						pitch: 80,
 						bearing: 0,
-						hideIcons: false,
+						hideIcons: true,
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
@@ -32,7 +42,7 @@
 						zoom: 9,
 						pitch: 80,
 						bearing: 0,
-						hideIcons: false,
+						hideIcons: true,
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
@@ -44,7 +54,7 @@
 						zoom: 9,
 						pitch: 80,
 						bearing: 0,
-						hideIcons: false,
+						hideIcons: true,
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
@@ -57,7 +67,7 @@
 						zoom: 9,
 						pitch: 80,
 						bearing: 0,
-						hideIcons: false,
+						hideIcons: true,
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
@@ -69,7 +79,7 @@
 						zoom: 9,
 						pitch: 80,
 						bearing: 0,
-						hideIcons: false,
+						hideIcons: true,
 						rotateAnimation: false,
 						rotateLoop: true,
 						rotateSpeed: 5,
@@ -91,6 +101,16 @@
 					
 				},
 				"3630197": {
+					"0": {
+						lat: 35.60335,
+						lng: -82.54496,
+						zoom: 9.5,
+						pitch: 0,
+						bearing: 0,
+						hideMap: true,
+						hideIcons: true,
+						showMarker: false
+					},
 					"1": {
 						lat: 35.60335,
 						lng: -82.54496,
@@ -103,38 +123,35 @@
 							{
 								lat: 35.58435,
 								lng: -82.57336,
-								title: "City Hall accountability",
+								title: "City Hall Accountability",
 								text: "Residents and officials still ask what went wrong and whether Asheville is ready for the next major storm.",
-								imageSrc: "river.png",
-								imageAlt: "Asheville city recovery reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								//imageSrc: "Center of Asheville - Credit Sydney DSCF1382.jpg",
+								//imageAlt: "Asheville city recovery reporting",
+								linkHref: "https://www.google.com/"
 							},
 							{
 								
 								lat: 35.58435,
 								lng: -82.51590,
-								title: "Music and recovery",
+								title: "Music and Recovery",
 								text: "Asheville artists and venues helped unify a fractured community through live music and shared spaces.",
-								imageSrc: "river.png",
-								imageAlt: "Asheville music venue reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								imageSrc: "images/Center of Asheville - Credit Sydney DSCF1382.jpg",
+								imageAlt: "City of Asheville",
+								linkHref: "https://www.google.com/"
 							},
 							{
 								lat: 35.60057,
 								lng: -82.54409,
-								title: "Debris to guitar",
+								title: "Debris to Guitars",
 								text: "A luthier turned storm-fallen wood into a guitar, creating a story of hope and renewal after destruction.",
-								imageSrc: "river.png",
-								imageAlt: "Recovered wood story location",
-								linkHref: "#",
-								linkText: "Read more"
+								//imageSrc: "Center of Asheville - Credit Sydney DSCF1382.jpg",
+								//imageAlt: "Recovered wood story location",
+								linkHref: "https://www.google.com/"
 							},
 						],
 					},
 					"2": {
-						lat: 35.454963,
+						lat: 35.464963,
 						lng: -82.287148,
 						zoom: 12,
 						pitch: 0,
@@ -145,38 +162,35 @@
 							{
 								lat: 35.454963,
 								lng: -82.287148,
-								title: "Churches on the front line",
-								text: "From Bat Cave to Asheville, churches and parishes became vital relief hubs in the first days after landfall.",
-								imageSrc: "river.png",
-								imageAlt: "Church recovery support locations",
-								linkHref: "#",
-								linkText: "Read more"
+								title: "Churches on the Front Line",
+								text: "Churches proved vital to recovery efforts in the days immediately following the storm. Our reporter traveled across the region, from Bat Cave to Asheville, to visit, sketch and paint five parishes that were central to people’s survival.",
+								//imageSrc: "genchurch.CR3",
+								//imageAlt: "Church recovery support locations",
+								linkHref: "https://www.google.com/"
 							},
 							{
 								lat: 35.43178,
 								lng: -82.22028,
-								title: "Tourism and business losses",
+								title: "Tourism and Business Losses",
 								text: "From Chimney Rock to the River Arts District, businesses faced a long, uneven economic comeback.",
-								imageSrc: "river.png",
-								imageAlt: "Business recovery in mountain communities",
-								linkHref: "#",
-								linkText: "Read more"
+								//imageSrc: "river.png",
+								//imageAlt: "Business recovery in mountain communities",
+								linkHref: "https://www.google.com/"
 							},
 							{
 								lat: 35.43178,
 								lng: -82.35355,
-								title: "Post offices still offline",
+								title: "Post Offices Still Offline",
 								text: "Reporters found multiple communities still missing local post office service long after the storm.",
-								imageSrc: "river.png",
-								imageAlt: "Community infrastructure recovery reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								imageSrc: "images/Green Mountain IMG_5593-2.jpg",
+								imageAlt: "Green Mountain",
+								linkHref: "https://www.google.com/"
 							},
 						],
 					},
 					"3": {
-						lat: 35.61007,
-						lng: -82.38539,
+						lat: 35.65007,
+						lng: -82.39539,
 						zoom: 12,
 						pitch: 0,
 						bearing: -10,
@@ -186,37 +200,34 @@
 							{
 								lat: 35.60431,
 								lng: -82.38905,
-								title: "Swannanoa devastation",
+								title: "Swannanoa Devastation",
 								text: "At the meeting point of two flooded rivers, Swannanoa saw homes swept away and neighborhoods transformed.",
-								imageSrc: "river.png",
+								imageSrc: "images/swannanoa.png",
 								imageAlt: "Swannanoa flood damage reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								linkHref: "https://www.google.com/"
 							},
 							{
 								lat: 35.58908,
 								lng: -82.46069,
-								title: "Wildlife after disaster",
+								title: "Wildlife After Disaster",
 								text: "Experts across mountain waterways tracked how smaller and often overlooked species were affected by Helene.",
-								imageSrc: "river.png",
+								imageSrc: "images/French Broad - Credit Sydney IMG_4231.jpg",
 								imageAlt: "French Broad River wildlife reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								linkHref: "https://www.google.com/"
 							},
 							{
-								lat: 35.62050,
-								lng: -82.32079,
-								title: "Lost and found stories",
-								text: "From Asheville to Marshall and Black Mountain, displaced possessions told stories of loss and recovery.",
-								imageSrc: "river.png",
-								imageAlt: "Black Mountain recovery area",
-								linkHref: "#",
-								linkText: "Read more"
+								lat: 35.633511,
+								lng: -82.324325,
+								title: "Water Resources",
+								text: "Water is a central character in the story of Helene. Our reporter walked the banks of the French and Swannanoa rivers as part of a report on why Asheville’s water supply went down and took so long to come back online.",
+								imageSrc: "images/IMG_5514.JPG",
+								imageAlt: "River",
+								linkHref: "https://www.google.com/"
 							},
 						],
 					},
 					"4": {
-						lat: 35.732039,
+						lat: 35.752039,
 						lng: -82.01426,
 						zoom: 8.5,
 						pitch: 0,
@@ -227,32 +238,67 @@
 							{
 								lat: 35.434941,
 								lng: -82.700625,
-								title: "Children carrying trauma",
+								title: "Children Carrying Trauma",
 								text: "Children in places like Fletcher described persistent fear and nightmares long after the storm.",
-								imageSrc: "river.png",
-								imageAlt: "Child-focused recovery reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								//imageSrc: "micaville.jpg",
+								//imageAlt: "Child-focused recovery reporting",
+								linkHref: "https://www.google.com/"
 							},
 							{
 								lat: 35.332039,
 								lng: -82.011283,
 								title: "Micaville and FEMA delays",
 								text: "Pastors and residents in Micaville and nearby towns described long waits and funding gaps in FEMA recovery support.",
-								imageSrc: "river.png",
+								imageSrc: "images/micaville.jpg",
 								imageAlt: "Damaged church and FEMA recovery reporting",
-								linkHref: "#",
-								linkText: "Read more"
+								linkHref: "https://www.google.com/"
 							},
 							{
-								lat: 35.722039,
+								lat: 35.702039,
 								lng: -81.178337,
-								title: "Volunteer pilots and aid",
+								title: "Volunteer Pilots and Aid",
 								text: "In Taylorsville, volunteer helicopter pilots described delivering supplies during Helene and preparing for future storms.",
-								imageSrc: "river.png",
+								imageSrc: "images/Taylorsville IMG_0592.jpg",
 								imageAlt: "Volunteer aid and supply drop story",
-								linkHref: "#",
-								linkText: "Read more"
+								linkHref: "https://www.google.com/"
+							}
+						],
+					},
+					"5": {
+						lat: 35.6584,
+						lng: -82.60518,
+						zoom: 10,
+						pitch: 0,
+						bearing: 0,
+						hideIcons: true,
+						showMarker: true,
+						markers: [
+							{
+								lat: 35.62050,
+								lng: -82.32079,
+								title: "Lost and Found Stories",
+								text: "From Asheville to Marshall and Black Mountain, displaced possessions told stories of loss and recovery.",
+								imageSrc: "images/Weaverville - Photo credit Sydney DSCF2137.jpg",
+								imageAlt: "Marshall",
+								linkHref: "https://www.google.com/"
+							},
+							{
+								lat: 35.65584,
+								lng: -82.60518,
+								title: "Reclaimed Wood",
+								text: "Debris litters the landscape after any major storm. But one woman, a luthier, decided to reuse some of the fallen tree wood in Asheville to make a guitar. Our reporter visited the saw mill and her studio to tell this story of hope and renewal. ",
+								//imageSrc: "micaville.jpg",
+								//imageAlt: "Damaged church and FEMA recovery reporting",
+								linkHref: "https://www.google.com/"
+							},
+							{
+								lat: 35.53634,
+								lng: -82.88721,
+								title: "Marginalized Communities",
+								text: "Many official alerts were delivered in English, leaving non-native speakers unprepared for what was coming. Our reporter talked to a central figure in the Hispanic community to discuss the risk that communication failure poses to marginalized communities.",
+								imageSrc: "images/Blue Ridge Radio Station - Asheville.png",
+								imageAlt: "Volunteer aid and supply drop story",
+								linkHref: "https://www.google.com/"
 							}
 						],
 					},
@@ -275,7 +321,9 @@
 					<div class="flourish-embed flourish-chart" data-src="story/3628495"><script src="https://public.flourish.studio/resources/embed.js"></script><noscript><img src="https://public.flourish.studio/story/3628495/thumbnail" width="100%" alt="visualization" /></noscript></div>
 				</figure>
 			</div>
-
+				<p class="first-trajectory-panel" data-story-id="3628495" data-slide="0">
+					Hurricane Helene's path from the Gulf of Mexico to Asheville, North Carolina. Follow along as we track the storm's journey and its devastating impact across the Southeast.
+				</p>
 				<p data-story-id="3628495" data-slide="1">
 					Hurricane Helene entered the Gulf of Mexico on September 24, 2024 as a Category 1 hurricane. As the system passed through the Gulf, abnormally high seasonal temperatures exacerbated the storm’s strength, building it up to a Category 4 hurricane over the next two days.
 				</p>
@@ -300,44 +348,25 @@
 		</div>
 
 		<div class="wrapper fl-scrolly-section fl-scrolly-section-no-flourish" data-story-id="3630197" data-hide-trajectory="true">
-			<figure class="photo-slide" data-story-id="3630197" data-slide="1" tabindex="0"> <!-- nc -->
-				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
-				<figcaption>
-					<p>In North Carolina, Asheville experienced this storm in what many referred to as a "1 in 1000 year" event.</p>
-					<a class="photo-slide-link" href="#">Read more</a>
-				</figcaption>
-			</figure>
-			<figure class="photo-slide" data-story-id="3630197" data-slide="2" tabindex="0"> <!-- nc -->
-				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
-				<figcaption>
-					<p>Water is a central character in the story of Helene. Our reporter walked the banks of the French and Swannanoa rivers as part of a report on why Asheville’s water supply went down and took so long to come back online.</p>
-					<a class="photo-slide-link" href="#">Read more</a>
-				</figcaption>
-			</figure>
-			<figure class="photo-slide" data-story-id="3630197" data-slide="3" tabindex="0"> <!-- nc -->
-				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
-				<figcaption>
-					<p>Debris litters the landscape after any major storm. But one woman, a luthier, decided to reuse some of the fallen tree wood to make a guitar. Our reporter visited the saw mill and her studio to tell this story of hope and renewal.</p>
-					<a class="photo-slide-link" href="#">Read more</a>
-				</figcaption>
-			</figure>
-			<figure class="photo-slide" data-story-id="3630197" data-slide="4" tabindex="0"> <!-- Asheville 3 -->
-				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
-				<figcaption>
-					<p>Even 18 months after the storm has passed, residents and officials are still asking what went wrong. Our reporter penetrated City Hall to find out why the city wasn’t better prepared and what officials have done to be ready for the next one.</p>
-					<a class="photo-slide-link" href="#">Read more</a>
-				</figcaption>
-			</figure>
-			<figure class="photo-slide" data-story-id="3630197" data-slide="5" tabindex="0"> <!-- Asheville 4 -->
-				<img src="river.png" alt="Storm damage scene in Asheville after Hurricane Helene">
-				<figcaption>
-					<p>Music served as a unifying force for a fractured community. Artists came together to lift up each other and their fellow North Carolinians. Our reporter canvassed music venues in the center of Asheville to record their songs and their words.</p>
-					<a class="photo-slide-link" href="#">Read more</a>
-				</figcaption>
-			</figure>
+			<div class="marker-step marker-step-transition" data-story-id="3630197" data-slide="0" id="chapter-transition" aria-label="North Carolina transition">
+				<div class="transition-media-bg" aria-hidden="true">
+					<video class="transition-bg-video" autoplay muted loop playsinline preload="auto">
+						<source src="IMG_5518.MOV">
+					</video>
+				</div>
+				<div class="transition-text-block" role="note" aria-label="Transition note">
+					<h3>North Carolina At A Glance</h3>
+					<p>Our group of reporters went to North Carolina, with the goal of shedding light on what many called a "1,000 year event" in Asheville and how the community has worked hard to rebuild since the disaster.</p>
+				</div>
+			</div>
+			<div class="marker-step" data-story-id="3630197" data-slide="1" id="chapter-1" aria-label="Chapter 1"></div>
+			<div class="marker-step" data-story-id="3630197" data-slide="2" id="chapter-2" aria-label="Chapter 2"></div>
+			<div class="marker-step" data-story-id="3630197" data-slide="3" id="chapter-3" aria-label="Chapter 3"></div>
+			<div class="marker-step" data-story-id="3630197" data-slide="4" id="chapter-4" aria-label="Chapter 4"></div>
+			<div class="marker-step" data-story-id="3630197" data-slide="5" id="chapter-5" aria-label="Chapter 5"></div>
 		</div>
 
-		<script src="flourish-scrolly.js?v=20260329-1"></script>
+		<script src="flourish-scrolly.js?v=20260411-2"></script>
 	</body>
 </html>
 
