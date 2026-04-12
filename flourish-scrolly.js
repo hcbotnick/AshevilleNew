@@ -666,7 +666,10 @@ function updateMapboxOverlay(triggerInfo) {
 	if (state.hideMap) {
 		stopContinuousRotation();
 		clearMapStepMarker();
-		pending_map_state = null;
+		pending_map_state = state;
+		if (map_is_ready) {
+			applyPendingMapState();
+		}
 		if (map_overlay) map_overlay.style.display = "none";
 		setVideoTransitionActive(true);
 		return;
