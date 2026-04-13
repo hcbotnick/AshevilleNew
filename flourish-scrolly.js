@@ -121,12 +121,15 @@ function initLinks() {
 
 function initIntersection() {
 	var observer = new IntersectionObserver(function(entries) {
+		var next = null;
 		entries.forEach(function(entry) {
 			if (!entry.isIntersecting) return;
-			setActiveStep(getTriggerStep(entry.target));
-			updateStoryFromTrigger(entry.target);
+			if (!next || entry.intersectionRatio > next.intersectionRatio) next = entry;
 		});
-	}, { rootMargin: "0px 0px -45% 0px", threshold: 0.02 });
+		if (!next) return;
+		setActiveStep(getTriggerStep(next.target));
+		updateStoryFromTrigger(next.target);
+	}, { rootMargin: "-12% 0px -32% 0px", threshold: [0.05, 0.15, 0.3, 0.5] });
 
 	getScrollyTriggers().forEach(function(trigger) {
 		observer.observe(trigger);
