@@ -228,6 +228,11 @@ function getMapboxToken() {
 	return "";
 }
 
+function setMapOverlayVisible(visible) {
+	if (!map_overlay) return;
+	map_overlay.classList.toggle("is-hidden", !visible);
+}
+
 function stopContinuousRotation() {
 	if (map_rotate_animation_frame === null) return;
 	cancelAnimationFrame(map_rotate_animation_frame);
@@ -702,7 +707,7 @@ function updateMapboxOverlay(triggerInfo) {
 	if (!map_overlay) initMapboxOverlay();
 	var state = parseMapState(triggerInfo);
 	if (!state) {
-		if (map_overlay) map_overlay.style.display = "block";
+		setMapOverlayVisible(true);
 		setVideoTransitionActive(false);
 		setMapSceneLabel("");
 		clearMapStepMarker();
@@ -716,12 +721,16 @@ function updateMapboxOverlay(triggerInfo) {
 		if (map_is_ready) {
 			applyPendingMapState();
 		}
-		if (map_overlay) map_overlay.style.display = "none";
 		setVideoTransitionActive(true);
+		requestAnimationFrame(function() {
+			setMapOverlayVisible(false);
+		});
 		return;
 	}
-	if (map_overlay) map_overlay.style.display = "block";
-	setVideoTransitionActive(false);
+	setMapOverlayVisible(true);
+	requestAnimationFrame(function() {
+		setVideoTransitionActive(false);
+	});
 	pending_map_state = state;
 	if (!map_is_ready) return;
 	applyPendingMapState();
@@ -754,7 +763,8 @@ function initStyles() {
 		".fl-scrolly-sticky .flourish-embed { position: relative !important; padding-bottom: 0 !important; min-height: 100%; height: 100% !important; overflow: hidden; border-radius: 8px; background: #05090f; }" +
 		".fl-scrolly-sticky .flourish-embed iframe { position: absolute !important; inset: 0 !important; height: 100% !important; width: 100% !important; }" +
 		".fl-scrolly-section .fl-scrolly-step { position: relative; z-index: 20; width: min(42vw, 380px); margin: 0 0 50vh; text-align: left; pointer-events: none; }" +
-		".fl-map-overlay { position: fixed; inset: 0; z-index: 2; background: #05090f; pointer-events: auto; }" +
+		".fl-map-overlay { position: fixed; inset: 0; z-index: 2; background: #05090f; opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0s; will-change: opacity; }" +
+		".fl-map-overlay.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 520ms; }" +
 		".fl-map-overlay-root { width: 100%; height: 100%; overflow: hidden; pointer-events: none; }" +
 		".fl-map-overlay-root canvas { pointer-events: none; }" +
 		".fl-map-overlay-root .mapboxgl-marker, .fl-map-overlay-root .mapboxgl-marker *, .fl-map-overlay-root .map-marker-slide-host, .fl-map-overlay-root .map-marker-slide-host * { pointer-events: auto; }" +
