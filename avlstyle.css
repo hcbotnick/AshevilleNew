@@ -183,6 +183,13 @@ body.fl-video-transition-active .transition-text-block {
 	transform: translateY(-18px);
 	max-width: min(78vw, 320px);
 	pointer-events: auto;
+	transition: transform 180ms ease, filter 180ms ease;
+}
+
+.map-marker-slide-host:hover,
+.map-marker-slide-host:focus-within {
+	transform: translateY(-23px);
+	filter: drop-shadow(0 9px 16px rgba(0, 0, 0, 0.24));
 }
 
 .map-marker-slide-host::after {
@@ -199,19 +206,25 @@ body.fl-video-transition-active .transition-text-block {
 
 .map-marker-slide-host .map-marker-slide.map-marker-card {
 	margin: 0;
-	background: #fffaf3;
-	border: 1px solid rgba(255, 255, 255, 0.18);
-	border-left: 6px solid #d4874c;
+	background: rgba(255, 250, 243, 0.9);
+	border: 2px solid rgba(134, 103, 77, 0.32);
 	box-shadow: 0 12px 28px rgba(109, 109, 109, 0.45);
 	padding: 7px;
 	max-width: 320px;
 	pointer-events: auto;
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.map-marker-slide-host:hover .map-marker-slide.map-marker-card,
+.map-marker-slide-host:focus-within .map-marker-slide.map-marker-card {
+	transform: translateY(-4px);
+	background: rgba(255, 250, 243, 1);
+	box-shadow: 0 20px 40px rgba(72, 72, 72, 0.54), 0 0 0 3px rgba(201, 119, 58, 0.68);
 }
 
 .map-marker-card-media {
 	position: relative;
 	overflow: hidden;
-	border-radius: 8px;
 }
 
 .map-marker-slide-host .map-marker-slide.map-marker-card img {
